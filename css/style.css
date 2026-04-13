@@ -1,0 +1,893 @@
+/* ================================================================
+   WEDDING LANDING PAGE — style.css
+   Stack: vanilla CSS · CSS Grid · clamp() · Custom Properties
+   All layout uses proportional units (%, rem, vw, vh, dvh)
+   No frameworks — pure modern CSS
+   ================================================================ */
+
+
+/* ────────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   ──────────────────────────────────────────────────────────────── */
+:root {
+  /* Palette ─ warm, muted, romantic
+     Section 1 + 3 share ivory;
+     the sage accent in section 2 creates visual rhythm.            */
+  --clr-ivory:        #FAF7F2;
+  --clr-ivory-warm:   #F3EDE1;
+  --clr-sage:         #C8D8C5;
+  --clr-text:         #3A2E26;
+  --clr-text-soft:    #7A6E65;
+  --clr-accent:       #8B7355;
+  --clr-accent-lt:    #A68B5B;
+  --clr-gold:         #C4A969;
+  --clr-white:        #FFFFFF;
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Raleway', Arial, sans-serif;
+
+  /* Fluid spacing (min · preferred · max) */
+  --sp-xs:  clamp(0.25rem, 0.6vw,  0.5rem);
+  --sp-sm:  clamp(0.5rem,  1vw,    0.85rem);
+  --sp-md:  clamp(0.75rem, 1.5vw,  1.25rem);
+  --sp-lg:  clamp(1.25rem, 2.5vw,  2rem);
+  --sp-xl:  clamp(1.5rem,  4vw,    3rem);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --t-mid:    0.35s var(--ease-out);
+  --t-fast:   0.18s ease;
+
+  /* Shadows */
+  --shadow-rest:  0 0.125rem 0.6rem rgba(58, 46, 38, 0.06);
+  --shadow-hover: 0 0.6rem 2.5rem rgba(58, 46, 38, 0.13);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESET & BASE
+   ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;   /* = 16px default — all rem scale from this */
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--clr-ivory-warm);
+  color: var(--clr-text);
+  overflow: hidden;
+  height: 100dvh;
+  width: 100%;
+}
+
+img, iframe {
+  display: block;
+  max-width: 100%;
+}
+
+a { color: inherit; }
+address { font-style: normal; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   PAGE LAYOUT  (desktop default)
+   Hero 3fr | Right panel 2fr (location + RSVP stacked)
+   ──────────────────────────────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  height: 100dvh;
+  width: 100%;
+}
+
+.right-panel {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100dvh;
+  min-height: 0;       /* allow grid children to shrink */
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   SECTION BASE
+   ──────────────────────────────────────────────────────────────── */
+.section {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;       /* flex/grid shrink safety */
+  display: flex;        /* let section-body stretch via flex: 1 */
+  flex-direction: column;
+  transition:
+    filter     var(--t-mid),
+    box-shadow var(--t-mid);
+}
+
+/* Spotlight hover — dim siblings, brighten hovered */
+.layout:has(.section:hover) .section {
+  filter: brightness(0.96) saturate(0.95);
+}
+.layout:has(.section:hover) .section:hover {
+  filter: brightness(1.03) saturate(1.05);
+  box-shadow: var(--shadow-hover);
+  z-index: 10;
+}
+
+/* Lift on smaller sections */
+.section--location,
+.section--rsvp {
+  transition:
+    filter     var(--t-mid),
+    box-shadow var(--t-mid),
+    transform  var(--t-mid);
+}
+.section--location:hover,
+.section--rsvp:hover {
+  transform: translateY(-0.2rem);
+}
+
+/* Section inner body — flex column, shrinkable children */
+.section-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;              /* stretch to fill section (works with section's display:flex) */
+  min-height: 0;
+  padding: var(--sp-md) var(--sp-md);
+  gap: var(--sp-sm);
+  overflow: hidden;       /* safety net — never overflow the section */
+}
+
+/* Shared section header */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+  flex-shrink: 0;
+}
+
+.section-deco {
+  font-size: 0.75rem;
+  color: var(--clr-accent);
+  letter-spacing: 0.6em;
+  opacity: 0.55;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1.8vw, 1.7rem);
+  color: var(--clr-text);
+  letter-spacing: 0.04em;
+}
+
+.section-rule {
+  width: 2.25rem;
+  height: 1px;
+  background: var(--clr-accent);
+  opacity: 0.35;
+}
+
+.section-hr {
+  width: 1.75rem;
+  border: none;
+  border-top: 1px solid var(--clr-text);
+  opacity: 0.1;
+  flex-shrink: 0;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   SECTION 1 · HERO
+   Light background + centered photo + dark text
+   ──────────────────────────────────────────────────────────────── */
+.section--hero {
+  background: var(--clr-ivory);
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  min-height: 0;
+  padding: var(--sp-lg) var(--sp-lg);
+  gap: clamp(0.4rem, 1.2vh, 0.9rem);
+  color: var(--clr-text);
+}
+
+/* Typography — hero */
+.hero__eyebrow {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.55rem, 0.85vw, 0.75rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--clr-text-soft);
+}
+
+.hero__names {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 5vw, 5rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--clr-text);
+}
+
+.hero__amp {
+  display: inline-block;
+  font-style: italic;
+  font-size: 0.7em;
+  color: var(--clr-gold);
+  margin: 0 0.15em;
+  font-weight: 400;
+}
+
+.hero__rule {
+  width: 3rem;
+  height: 1px;
+  background: var(--clr-accent);
+  opacity: 0.3;
+}
+
+.hero__dateline {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.62rem, 0.95vw, 0.82rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+}
+
+/* Hero photo — centered, proportional */
+.hero__photo {
+  flex: 0 1 auto;
+  width: min(60%, 24rem);
+  overflow: hidden;
+  border-radius: 0.2rem;
+  box-shadow: 0 0.25rem 1.5rem rgba(58, 46, 38, 0.12);
+  margin: 0;
+  line-height: 0;    /* remove inline-block gap under img */
+}
+
+.hero__photo img {
+  width: 100%;
+  height: auto;
+  max-height: 35vh;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.hero__verse {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(0.82rem, 1.2vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--clr-text-soft);
+  max-width: 38ch;
+}
+
+.hero__place {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.55rem, 0.8vw, 0.68rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--clr-text-soft);
+  opacity: 0.6;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   SECTION 2 · LOCATION
+   ──────────────────────────────────────────────────────────────── */
+.section--location {
+  background: var(--clr-sage);
+}
+
+/* Info group (address + schedule) — flex for density control */
+.location-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.location-address {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 0.95vw, 0.82rem);
+  color: var(--clr-text);
+  line-height: 1.5;
+}
+
+.location-venue {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+  color: var(--clr-accent);
+}
+
+.location-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  width: 100%;
+  max-width: 20rem;
+}
+
+.location-schedule__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.location-schedule__row dt {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(0.55rem, 0.8vw, 0.65rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  white-space: nowrap;
+}
+
+.location-schedule__row dd {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.62rem, 0.88vw, 0.75rem);
+  color: var(--clr-text-soft);
+  white-space: nowrap;
+}
+
+/* Map — flex-shrinkable, proportional height */
+.location-map {
+  width: 100%;
+  flex: 0 1 auto;             /* don't grow — let section-body center content */
+  height: 10rem;
+  min-height: 4rem;           /* never disappear entirely */
+  max-height: 12rem;
+  border-radius: 0.2rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-rest);
+  opacity: 0.88;
+}
+
+.location-map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.map-link {
+  font-family: var(--font-body);
+  font-size: clamp(0.58rem, 0.8vw, 0.68rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  text-decoration: none;
+  opacity: 0.75;
+  flex-shrink: 0;
+  transition: opacity var(--t-fast);
+}
+
+.map-link:hover,
+.map-link:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   SECTION 3 · RSVP & IBAN
+   ──────────────────────────────────────────────────────────────── */
+.section--rsvp {
+  background: var(--clr-ivory);
+  filter: brightness(1.03) saturate(1.05);  /* default = hero's hover look */
+}
+
+/* When RSVP is hovered, reset to plain ivory (= hero's default look) */
+.layout:has(.section:hover) .section--rsvp:hover {
+  filter: brightness(1);
+}
+
+.rsvp-message {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+  line-height: 1.65;
+  color: var(--clr-text-soft);
+  text-align: center;
+  flex-shrink: 1;
+}
+
+.rsvp-message strong {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--clr-text);
+}
+
+/* RSVP button — primary CTA */
+.rsvp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.7em 1.8em;
+  background: var(--clr-accent);
+  color: var(--clr-white);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(0.6rem, 0.85vw, 0.72rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 0.15rem;
+  box-shadow: 0 0.2rem 0.9rem rgba(139, 115, 85, 0.32);
+  flex-shrink: 0;
+  transition:
+    background   var(--t-fast),
+    transform    var(--t-fast),
+    box-shadow   var(--t-fast);
+}
+
+.rsvp-btn:hover {
+  background: var(--clr-accent-lt);
+  transform: translateY(-0.12rem);
+  box-shadow: 0 0.4rem 1.4rem rgba(139, 115, 85, 0.42);
+}
+
+.rsvp-btn:focus-visible {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 0.2rem;
+}
+
+.rsvp-btn__arrow {
+  display: inline-block;
+  transition: transform var(--t-fast);
+}
+
+.rsvp-btn:hover .rsvp-btn__arrow {
+  transform: translateX(0.2rem);
+}
+
+/* Gift & IBAN */
+.gift-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+  width: 100%;
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.gift-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(0.82rem, 1.1vw, 1rem);
+  color: var(--clr-text);
+  letter-spacing: 0.04em;
+}
+
+.gift-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.6rem, 0.82vw, 0.72rem);
+  color: var(--clr-text-soft);
+  line-height: 1.55;
+  text-align: center;
+}
+
+/* IBAN — clickable copy card */
+.iban-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  width: 100%;
+  max-width: 24rem;
+  padding: 0.5em 1em;
+  background: rgba(139, 115, 85, 0.07);
+  border: 1px solid rgba(139, 115, 85, 0.18);
+  border-radius: 0.2rem;
+  cursor: pointer;
+  transition:
+    background   var(--t-fast),
+    border-color var(--t-fast);
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.iban-block:hover {
+  background: rgba(139, 115, 85, 0.13);
+  border-color: rgba(139, 115, 85, 0.3);
+}
+
+.iban-block:focus-visible {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 0.12rem;
+}
+
+.iban-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.55rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  opacity: 0.75;
+}
+
+.iban-value {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.62rem, 0.9vw, 0.78rem);
+  color: var(--clr-text);
+  letter-spacing: 0.06em;
+  user-select: all;
+  white-space: nowrap;
+}
+
+.iban-hint {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 300;
+  color: var(--clr-text-soft);
+  opacity: 0.6;
+  letter-spacing: 0.1em;
+}
+
+.iban-name {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.58rem, 0.8vw, 0.68rem);
+  color: var(--clr-text-soft);
+  opacity: 0.75;
+}
+
+/* RSVP footer */
+.rsvp-footer {
+  flex-shrink: 0;
+}
+
+.rsvp-thanks {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
+  color: var(--clr-text-soft);
+  line-height: 1.5;
+  text-align: center;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   ENTRANCE ANIMATIONS  (CSS only — no JS dependency)
+   ──────────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(0.8rem); }
+  to   { opacity: 1; transform: translateY(0);      }
+}
+
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(1rem); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+.hero__eyebrow  { animation: fadeUp 0.6s var(--ease-out) 0.05s both; }
+.hero__names    { animation: fadeUp 0.6s var(--ease-out) 0.12s both; }
+.hero__rule     { animation: fadeUp 0.5s var(--ease-out) 0.18s both; }
+.hero__dateline { animation: fadeUp 0.5s var(--ease-out) 0.22s both; }
+.hero__photo    { animation: fadeUp 0.6s var(--ease-out) 0.28s both; }
+.hero__verse    { animation: fadeUp 0.5s var(--ease-out) 0.34s both; }
+.hero__place    { animation: fadeUp 0.5s var(--ease-out) 0.38s both; }
+
+.section--location { animation: fadeRight 0.6s var(--ease-out) 0.1s both; }
+.section--rsvp     { animation: fadeRight 0.6s var(--ease-out) 0.2s both; }
+
+
+/* ────────────────────────────────────────────────────────────────
+   COUNTDOWN  (injected by JS)
+   ──────────────────────────────────────────────────────────────── */
+.hero__countdown {
+  opacity: 0.65;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.1em;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — Tablet portrait  (height > width, ≤ 1024px)
+   Hero top 58% | location + RSVP side-by-side bottom 42%
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 58dvh 42dvh;
+  }
+
+  .right-panel {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    height: 42dvh;
+  }
+
+  .hero__content {
+    gap: clamp(0.25rem, 0.8vh, 0.6rem);
+    padding: var(--sp-md);
+  }
+
+  .hero__photo {
+    width: min(50%, 18rem);
+  }
+
+  .hero__photo img {
+    max-height: 22vh;
+  }
+
+  /* Hide verse on tight portrait to give photo + names room */
+  .hero__verse {
+    display: none;
+  }
+
+  .section-body {
+    padding: var(--sp-sm) var(--sp-sm);
+    gap: clamp(0.2rem, 0.6vh, 0.5rem);
+  }
+
+  .location-map {
+    max-height: 8rem;
+    min-height: 3rem;
+  }
+
+  /* No lift — sections share a row, lifting gaps */
+  .section--location:hover,
+  .section--rsvp:hover {
+    transform: none;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — Tablet landscape  (768–1199px, landscape)
+   Same desktop layout, tighter spacing
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (min-width: 768px) and (max-width: 1199px) and (orientation: landscape) {
+
+  .section-body {
+    padding: var(--sp-sm) var(--sp-sm);
+    gap: clamp(0.25rem, 0.8vh, 0.6rem);
+  }
+
+  .hero__content {
+    padding: var(--sp-md);
+    gap: clamp(0.3rem, 0.8vh, 0.6rem);
+  }
+
+  .hero__photo {
+    width: min(55%, 20rem);
+  }
+
+  .hero__photo img {
+    max-height: 30vh;
+  }
+
+  .location-map {
+    max-height: 9rem;
+    min-height: 3rem;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — Short landscape  (phones in landscape, height ≤ 500px)
+   Force single column + scroll — too short for side-by-side
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .layout {
+    display: block;
+    height: auto;
+  }
+
+  .section--hero {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .right-panel {
+    display: block;
+    height: auto;
+  }
+
+  .section--location,
+  .section--rsvp {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .section-body {
+    padding: var(--sp-lg) var(--sp-xl);
+    justify-content: center;
+  }
+
+  .hero__content {
+    padding: var(--sp-md) var(--sp-xl);
+    min-height: 100dvh;
+    justify-content: center;
+  }
+
+  .hero__photo {
+    width: min(40%, 16rem);
+  }
+
+  .hero__photo img {
+    max-height: 50vh;
+  }
+
+  .location-map {
+    max-height: 14rem;
+  }
+
+  /* No hover effects on touch */
+  .section--location:hover,
+  .section--rsvp:hover { transform: none; }
+  .layout:has(.section:hover) .section { filter: none; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   RESPONSIVE — Mobile  (≤ 767px, any orientation)
+   Single column, scrollable
+   ──────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 767px) {
+
+  body {
+    overflow-y: auto;
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .layout {
+    display: block;
+    height: auto;
+  }
+
+  .section--hero {
+    height: 100dvh;
+    min-height: 26rem;
+  }
+
+  .right-panel {
+    display: block;
+    height: auto;
+  }
+
+  .section--location,
+  .section--rsvp {
+    height: auto;
+    min-height: 70dvh;
+  }
+
+  .section-body {
+    padding: var(--sp-xl) var(--sp-lg);
+    justify-content: center;
+  }
+
+  .hero__content {
+    padding: var(--sp-lg) var(--sp-md);
+    gap: clamp(0.4rem, 1.5vh, 1rem);
+  }
+
+  .hero__photo {
+    width: min(80%, 20rem);
+  }
+
+  .hero__photo img {
+    max-height: 28vh;
+  }
+
+  .location-map {
+    min-height: 8rem;
+    max-height: 14rem;
+  }
+
+  .iban-value {
+    white-space: normal;     /* allow wrap on narrow phones */
+    word-break: break-all;
+  }
+
+  /* No hover effects on touch */
+  .section--location:hover,
+  .section--rsvp:hover { transform: none; }
+  .layout:has(.section:hover) .section { filter: none; }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   REDUCED MOTION  (accessibility)
+   ──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  *, *::before, *::after {
+    animation-duration:  0.01ms !important;
+    animation-delay:     0ms    !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero__eyebrow,
+  .hero__names,
+  .hero__rule,
+  .hero__dateline,
+  .hero__photo,
+  .hero__verse,
+  .hero__place,
+  .section--location,
+  .section--rsvp {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   PRINT
+   ──────────────────────────────────────────────────────────────── */
+@media print {
+
+  body {
+    overflow: visible;
+    height: auto;
+  }
+
+  .layout {
+    display: block;
+    height: auto;
+  }
+
+  .right-panel { display: block; }
+
+  .section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    height: auto;
+    min-height: 0;
+  }
+
+  .location-map { display: none; }
+}
