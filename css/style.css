@@ -309,7 +309,7 @@ address { font-style: normal; }
    ──────────────────────────────────────────────────────────────── */
 .section--location {
   background:
-    linear-gradient(rgba(200, 216, 197, 0.6), rgba(200, 216, 197, 0.6)),
+    linear-gradient(rgba(235, 242, 233, 0.78), rgba(235, 242, 233, 0.78)),
     url("../img/20260320_1244_Elegant Architectural Sketch_remix_01km5gwvfgefpaefngyrwxhj1q.png")
       center / cover no-repeat,
     var(--clr-sage);
@@ -361,19 +361,19 @@ address { font-style: normal; }
 
 .location-schedule__row dt {
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(0.55rem, 0.8vw, 0.65rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--clr-accent);
+  color: var(--clr-text);
   white-space: nowrap;
 }
 
 .location-schedule__row dd {
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
   font-size: clamp(0.62rem, 0.88vw, 0.75rem);
-  color: var(--clr-text-soft);
+  color: var(--clr-text);
   white-space: nowrap;
 }
 
@@ -387,24 +387,30 @@ address { font-style: normal; }
   border-radius: 0.2rem;
   overflow: hidden;
   box-shadow: var(--shadow-rest);
-  opacity: 0.92;
+  background: var(--clr-sage);
 }
 
 .location-map iframe {
   width: 100%;
   height: 100%;
   border: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.location-map iframe.is-loaded {
+  opacity: 1;
 }
 
 .map-link {
   font-family: var(--font-body);
   font-size: clamp(0.58rem, 0.8vw, 0.68rem);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--clr-accent);
+  color: var(--clr-text);
   text-decoration: none;
-  opacity: 0.75;
+  opacity: 0.9;
   flex-shrink: 0;
   transition: opacity var(--t-fast);
 }
