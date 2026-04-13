@@ -106,20 +106,17 @@ function initCountdown() {
   const dateLine = document.querySelector('.hero__dateline');
   if (!dateLine) return;
 
-  const WEDDING = new Date('2026-09-12T15:00:00');
-  const now     = new Date();
-  const diff    = WEDDING - now;
+  const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const WEDDING_DAY = startOfDay(new Date(2026, 8, 12));  // 12 Sep 2026
+  const today       = startOfDay(new Date());
 
-  if (diff <= 0) {
-    dateLine.insertAdjacentHTML(
-      'beforeend',
-      ' <span class="hero__countdown"> · oggi è il giorno!</span>'
-    );
-    return;
-  }
+  const days = Math.round((WEDDING_DAY - today) / 86400000);
 
-  const days  = Math.ceil(diff / (1000 * 60 * 60 * 24));
-  const label = days === 1 ? 'domani' : `tra ${days.toLocaleString('it-IT')} giorni`;
+  let label;
+  if (days < 0)      return;                                // past — show nothing
+  else if (days === 0) label = 'oggi è il giorno!';
+  else if (days === 1) label = 'manca 1 giorno';
+  else                 label = `mancano ${days.toLocaleString('it-IT')} giorni`;
 
   const span = document.createElement('span');
   span.className = 'hero__countdown';
