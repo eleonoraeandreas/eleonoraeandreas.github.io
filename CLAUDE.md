@@ -39,12 +39,25 @@ Header → message → CTA → presence line → hr → gift text → 3-row IBAN
 ## Map iframe
 Must use the embeddable URL form (`https://www.google.com/maps?q=…&output=embed`). The `/maps/place/…` URL sets `X-Frame-Options: sameorigin` and will not render.
 
-## Countdown (js/main.js)
-Calendar-date based (not ms-diff + `Math.ceil`, which was wrong on the wedding day itself):
-- 0 days → "oggi è il giorno!"
-- 1 day  → "manca 1 giorno"
-- >1     → "mancano N giorni"
-- past   → render nothing
+### Map load delay (known limitation — partially mitigated)
+Google's embed ships ~800KB–1.5MB of JS + tiles, so there's an inherent delay before the map paints. What's in place (quick-win):
+- `preconnect` hints to `google.com`, `maps.google.com`, `maps.gstatic.com`, `khms0/1.google.com` in `<head>`.
+- `loading="eager"` + `fetchpriority="high"` on the iframe so the fetch starts at page load, not on scroll.
+- `.location-map` container has a sage background and the iframe fades in via `is-loaded` class (`initMapFade` in [js/main.js](js/main.js)) so the white-flash is masked rather than eliminated.
+
+**Possible future improvement — facade pattern:** replace the iframe with a static image (the architectural sketch, or a Maps Static API screenshot) and swap in the live iframe only on click/tap. Fully eliminates the delay at the cost of one user click. Worth considering if load time still feels off in production on slow mobile.
+
+## Countdown
+Lives in the footer (`.countdown-footer`), English, calendar-date based (not ms-diff + `Math.ceil`):
+- 0 days  → "it's the day!"
+- 1 day   → "1 day to go!"
+- >1      → "N days to go!"
+- past    → render nothing (footer stays empty)
+
+Hero `.hero__dateline` is populated by JS with the date only ("Sabato 12 Settembre 2026") — no time, no countdown there anymore.
+
+## Location text
+Dark warm brown (`--clr-text` #3A2E26) over the sage+sketch backdrop. We tried (a) ivory/white text and (b) a lighter overlay with darker text — both landed wrong. The original sage overlay (60%) + dark text is the agreed look; do not flip the contrast again without asking.
 
 ## Placeholders (must update before production)
 - Hero photo (currently picsum seed `eleonora-andreas`)

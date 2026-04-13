@@ -102,26 +102,28 @@ function initIbanCopy() {
 // ────────────────────────────────────────────────────────────────
 // COUNTDOWN — "tra X giorni" appended to the date line
 // ────────────────────────────────────────────────────────────────
-function initCountdown() {
+function initDateline() {
   const dateLine = document.querySelector('.hero__dateline');
   if (!dateLine) return;
+  dateLine.textContent = 'Sabato 12 Settembre 2026';
+}
+
+function initCountdown() {
+  const target = document.querySelector('.countdown-footer__text');
+  if (!target) return;
 
   const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const WEDDING_DAY = startOfDay(new Date(2026, 8, 12));  // 12 Sep 2026
+  const WEDDING_DAY = startOfDay(new Date(2026, 8, 12));
   const today       = startOfDay(new Date());
-
-  const days = Math.round((WEDDING_DAY - today) / 86400000);
+  const days        = Math.round((WEDDING_DAY - today) / 86400000);
 
   let label;
-  if (days < 0)      return;                                // past — show nothing
-  else if (days === 0) label = 'oggi è il giorno!';
-  else if (days === 1) label = '1 giorno';
-  else                 label = `${days.toLocaleString('it-IT')} giorni`;
+  if (days < 0)        return;
+  else if (days === 0) label = "it's the day!";
+  else if (days === 1) label = '- 1 day to go!';
+  else                 label = `- ${days.toLocaleString('en-US')} days to go!`;
 
-  const span = document.createElement('span');
-  span.className = 'hero__countdown';
-  span.textContent = ` · ${label}`;
-  dateLine.appendChild(span);
+  target.textContent = label;
 }
 
 
@@ -138,6 +140,7 @@ function initMapFade() {
 document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initIbanCopy();
+  initDateline();
   initCountdown();
   initMapFade();
 });

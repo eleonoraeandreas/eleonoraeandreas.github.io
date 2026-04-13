@@ -30,6 +30,13 @@
     rel="stylesheet"
   >
 
+  <!-- Google Maps embed: preconnect to shave DNS/TLS time off the iframe fetch -->
+  <link rel="preconnect" href="https://www.google.com">
+  <link rel="preconnect" href="https://maps.google.com">
+  <link rel="preconnect" href="https://maps.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://khms0.google.com" crossorigin>
+  <link rel="preconnect" href="https://khms1.google.com" crossorigin>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -61,8 +68,8 @@
             loading="eager">
         </figure>
 
-        <p class="hero__verse">"Non vediamo l'ora di festeggiare questo giorno speciale insieme a voi!"</p>
-        <p class="hero__place">Con tutto il nostro affetto,<br>Eleonora &amp; Andreas</p>
+        <p class="hero__verse">Non vediamo l'ora di festeggiare questo giorno speciale insieme a voi!</p>
+        <p class="hero__place">Con tutto il nostro affetto,<br>Ele e Andre</p>
 
       </div>
     </section><!-- /.section--hero -->
@@ -94,7 +101,7 @@
             <dl class="location-schedule">
               <div class="location-schedule__row">
                 <dt>Cerimonia</dt>
-                <dd>Sabato 12 Settembre 2026 · ore 15:00</dd>
+                <dd>ore 16:30</dd>
               </div>
               <div class="location-schedule__row">
                 <dt>Ricevimento</dt>
@@ -107,7 +114,8 @@
             <iframe
               src="https://www.google.com/maps?q=Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO&hl=it&z=15&output=embed"
               title="Mappa: Strada Val S. Martino Sup., 60, Torino"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
               allowfullscreen
               referrerpolicy="no-referrer-when-downgrade">
             </iframe>
@@ -144,7 +152,7 @@
           </header>
 
           <p class="rsvp-message">
-            Vi preghiamo di confermare la vostra presenza entro <strong>mercoledì 15 luglio</strong>
+            Vi preghiamo di confermare la vostra presenza entro mercoledì 15 luglio
           </p>
 
           <a
@@ -184,6 +192,10 @@
       </section><!-- /.section--rsvp -->
 
     </div><!-- /.right-panel -->
+
+    <footer class="countdown-footer" id="countdown" aria-label="Countdown">
+      <p class="countdown-footer__text"></p>
+    </footer>
 
   </main><!-- /#main-content -->
 
