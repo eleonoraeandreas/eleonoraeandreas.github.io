@@ -115,8 +115,8 @@ function initCountdown() {
   let label;
   if (days < 0)      return;                                // past — show nothing
   else if (days === 0) label = 'oggi è il giorno!';
-  else if (days === 1) label = 'manca 1 giorno';
-  else                 label = `mancano ${days.toLocaleString('it-IT')} giorni`;
+  else if (days === 1) label = '1 giorno';
+  else                 label = `${days.toLocaleString('it-IT')} giorni`;
 
   const span = document.createElement('span');
   span.className = 'hero__countdown';
