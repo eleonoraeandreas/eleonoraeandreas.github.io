@@ -114,10 +114,10 @@ address { font-style: normal; }
 
 /* Spotlight hover — dim siblings, brighten hovered */
 .layout:has(.section:hover) .section {
-  filter: brightness(0.96) saturate(0.95);
+  filter: brightness(0.97);
 }
 .layout:has(.section:hover) .section:hover {
-  filter: brightness(1.03) saturate(1.05);
+  filter: none;
   box-shadow: var(--shadow-hover);
   z-index: 10;
 }
@@ -403,18 +403,35 @@ address { font-style: normal; }
   text-underline-offset: 0.2em;
 }
 
+/* Parking note — compact, sits below map link */
+.location-parking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.6rem, 0.82vw, 0.72rem);
+  color: var(--clr-text-soft);
+  line-height: 1.4;
+  max-width: 22rem;
+  flex-shrink: 0;
+}
+
+.location-parking__label {
+  font-weight: 500;
+  font-size: clamp(0.55rem, 0.78vw, 0.65rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+}
+
 
 /* ────────────────────────────────────────────────────────────────
    SECTION 3 · RSVP & IBAN
    ──────────────────────────────────────────────────────────────── */
 .section--rsvp {
-  background: var(--clr-ivory);
-  filter: brightness(1.03) saturate(1.05);  /* default = hero's hover look */
-}
-
-/* When RSVP is hovered, reset to plain ivory (= hero's default look) */
-.layout:has(.section:hover) .section--rsvp:hover {
-  filter: brightness(1);
+  background: var(--clr-ivory-warm);
 }
 
 .rsvp-message {
@@ -505,15 +522,27 @@ address { font-style: normal; }
   text-align: center;
 }
 
+/* Gift presence line — normal-weight note above the IBAN block */
+.gift-presence {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.66rem, 0.9vw, 0.78rem);
+  line-height: 1.55;
+  color: var(--clr-text);
+  text-align: center;
+  max-width: 32ch;
+  flex-shrink: 0;
+}
+
 /* IBAN — clickable copy card */
 .iban-block {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.15em;
+  align-items: stretch;
+  gap: 0.25em;
   width: 100%;
   max-width: 24rem;
-  padding: 0.5em 1em;
+  padding: 0.6em 1em;
   background: rgba(139, 115, 85, 0.07);
   border: 1px solid rgba(139, 115, 85, 0.18);
   border-radius: 0.2rem;
@@ -536,24 +565,33 @@ address { font-style: normal; }
   outline-offset: 0.12rem;
 }
 
+.iban-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75em;
+  width: 100%;
+}
+
 .iban-label {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 0.55rem;
-  letter-spacing: 0.32em;
+  font-size: clamp(0.52rem, 0.72vw, 0.6rem);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--clr-accent);
-  opacity: 0.75;
+  opacity: 0.8;
+  white-space: nowrap;
 }
 
 .iban-value {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: clamp(0.62rem, 0.9vw, 0.78rem);
+  font-size: clamp(0.62rem, 0.88vw, 0.76rem);
   color: var(--clr-text);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   user-select: all;
-  white-space: nowrap;
+  text-align: right;
 }
 
 .iban-hint {
@@ -563,14 +601,8 @@ address { font-style: normal; }
   color: var(--clr-text-soft);
   opacity: 0.6;
   letter-spacing: 0.1em;
-}
-
-.iban-name {
-  font-family: var(--font-body);
-  font-weight: 300;
-  font-size: clamp(0.58rem, 0.8vw, 0.68rem);
-  color: var(--clr-text-soft);
-  opacity: 0.75;
+  margin-top: 0.3em;
+  text-align: center;
 }
 
 /* RSVP footer */
@@ -830,6 +862,11 @@ address { font-style: normal; }
   .iban-value {
     white-space: normal;     /* allow wrap on narrow phones */
     word-break: break-all;
+    text-align: right;
+  }
+
+  .section--hero {
+    background: var(--clr-ivory-warm);   /* warmer ivory on mobile, less white */
   }
 
   /* No hover effects on touch */
