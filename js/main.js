@@ -128,8 +128,16 @@ function initCountdown() {
 // ────────────────────────────────────────────────────────────────
 // INIT
 // ────────────────────────────────────────────────────────────────
+function initMapFade() {
+  const iframe = document.querySelector('.location-map iframe');
+  if (!iframe) return;
+  if (iframe.complete) iframe.classList.add('is-loaded');
+  else iframe.addEventListener('load', () => iframe.classList.add('is-loaded'), { once: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initIbanCopy();
   initCountdown();
+  initMapFade();
 });
