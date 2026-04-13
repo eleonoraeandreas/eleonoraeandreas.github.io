@@ -309,11 +309,25 @@ address { font-style: normal; }
    ──────────────────────────────────────────────────────────────── */
 .section--location {
   background:
-    linear-gradient(rgba(235, 242, 233, 0.78), rgba(235, 242, 233, 0.78)),
+    linear-gradient(rgba(200, 216, 197, 0.6), rgba(200, 216, 197, 0.6)),
     url("../img/20260320_1244_Elegant Architectural Sketch_remix_01km5gwvfgefpaefngyrwxhj1q.png")
       center / cover no-repeat,
     var(--clr-sage);
 }
+
+/* Location text — dark warm brown against the sage+sketch backdrop */
+.section--location .section-title,
+.section--location .section-deco,
+.section--location .location-address,
+.section--location .map-link,
+.section--location .location-parking,
+.section--location .location-schedule__row dt,
+.section--location .location-schedule__row dd,
+.section--location .location-parking__label {
+  color: var(--clr-text);
+}
+.section--location .location-venue { color: var(--clr-text); font-weight: 500; }
+.section--location .map-link { opacity: 1; font-weight: 500; }
 
 /* Info group (address + schedule) — flex for density control */
 .location-info {
@@ -328,9 +342,10 @@ address { font-style: normal; }
 .location-address {
   display: flex;
   flex-direction: column;
-  gap: 0.1em;
+  gap: 0.15em;
   font-family: var(--font-body);
-  font-size: clamp(0.68rem, 0.95vw, 0.82rem);
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+  font-weight: 500;
   color: var(--clr-text);
   line-height: 1.5;
 }
@@ -362,18 +377,18 @@ address { font-style: normal; }
 .location-schedule__row dt {
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: clamp(0.55rem, 0.8vw, 0.65rem);
+  font-size: clamp(0.68rem, 0.92vw, 0.8rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--clr-text);
+  color: var(--clr-accent);
   white-space: nowrap;
 }
 
 .location-schedule__row dd {
   font-family: var(--font-body);
-  font-weight: 400;
-  font-size: clamp(0.62rem, 0.88vw, 0.75rem);
-  color: var(--clr-text);
+  font-weight: 500;
+  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+  color: var(--clr-text-soft);
   white-space: nowrap;
 }
 
@@ -405,12 +420,12 @@ address { font-style: normal; }
 .map-link {
   font-family: var(--font-body);
   font-size: clamp(0.58rem, 0.8vw, 0.68rem);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--clr-text);
+  color: var(--clr-accent);
   text-decoration: none;
-  opacity: 0.9;
+  opacity: 0.85;
   flex-shrink: 0;
   transition: opacity var(--t-fast);
 }
@@ -624,6 +639,25 @@ address { font-style: normal; }
 }
 
 /* ────────────────────────────────────────────────────────────────
+   COUNTDOWN FOOTER
+   ──────────────────────────────────────────────────────────────── */
+.countdown-footer {
+  background: var(--clr-ivory);
+  padding: var(--sp-xl) var(--sp-md);
+  text-align: center;
+}
+
+.countdown-footer__text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  color: var(--clr-accent);
+  letter-spacing: 0.02em;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
    ENTRANCE ANIMATIONS  (CSS only — no JS dependency)
    ──────────────────────────────────────────────────────────────── */
 @keyframes fadeUp {
@@ -646,17 +680,6 @@ address { font-style: normal; }
 
 .section--location { animation: fadeRight 0.6s var(--ease-out) 0.1s both; }
 .section--rsvp     { animation: fadeRight 0.6s var(--ease-out) 0.2s both; }
-
-
-/* ────────────────────────────────────────────────────────────────
-   COUNTDOWN  (injected by JS)
-   ──────────────────────────────────────────────────────────────── */
-.hero__countdown {
-  opacity: 0.65;
-  font-weight: 300;
-  font-style: italic;
-  letter-spacing: 0.1em;
-}
 
 
 /* ────────────────────────────────────────────────────────────────
