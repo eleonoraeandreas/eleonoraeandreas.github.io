@@ -67,9 +67,8 @@ body {
   font-family: var(--font-body);
   background: var(--clr-ivory-warm);
   color: var(--clr-text);
-  overflow: hidden;
-  height: 100dvh;
   width: 100%;
+  min-height: 100dvh;
 }
 
 img, iframe {
@@ -82,21 +81,27 @@ address { font-style: normal; }
 
 
 /* ────────────────────────────────────────────────────────────────
-   PAGE LAYOUT  (desktop default)
-   Hero 3fr | Right panel 2fr (location + RSVP stacked)
+   PAGE LAYOUT
+   Hero takes the full viewport; location + RSVP scroll in below.
+   On wide screens the two lower sections sit side by side.
    ──────────────────────────────────────────────────────────────── */
 .layout {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  height: 100dvh;
+  display: block;
   width: 100%;
+}
+
+.section--hero {
+  height: 100dvh;
+  min-height: 32rem;
 }
 
 .right-panel {
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  height: 100dvh;
-  min-height: 0;       /* allow grid children to shrink */
+  grid-template-columns: 1fr 1fr;
+}
+
+.right-panel > .section {
+  min-height: 70dvh;
 }
 
 
@@ -137,10 +142,8 @@ address { font-style: normal; }
   transform: translateY(-0.2rem);
 }
 
-/* Section inner body — flex column, shrinkable children.
-   overflow-y: auto is a safety net: if content is too tall for the
-   fixed-height right panel at awkward viewport sizes, the section
-   scrolls internally instead of clipping the last line. */
+/* Section inner body — flex column, content-sized. Now that the
+   page scrolls, sections grow to fit content naturally. */
 .section-body {
   display: flex;
   flex-direction: column;
@@ -149,11 +152,8 @@ address { font-style: normal; }
   text-align: center;
   flex: 1;
   min-height: 0;
-  padding: var(--sp-md) var(--sp-md);
-  gap: var(--sp-sm);
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
+  padding: var(--sp-xl) var(--sp-lg);
+  gap: var(--sp-md);
 }
 
 /* Shared section header */
@@ -304,9 +304,15 @@ address { font-style: normal; }
 
 /* ────────────────────────────────────────────────────────────────
    SECTION 2 · LOCATION
+   Sage tone over the old hero sketch, softened with an overlay
+   so text stays legible.
    ──────────────────────────────────────────────────────────────── */
 .section--location {
-  background: var(--clr-sage);
+  background:
+    linear-gradient(rgba(200, 216, 197, 0.6), rgba(200, 216, 197, 0.6)),
+    url("../img/20260320_1244_Elegant Architectural Sketch_remix_01km5gwvfgefpaefngyrwxhj1q.png")
+      center / cover no-repeat,
+    var(--clr-sage);
 }
 
 /* Info group (address + schedule) — flex for density control */
@@ -376,13 +382,12 @@ address { font-style: normal; }
    letting the parking note + map link stay visible. */
 .location-map {
   width: 100%;
-  flex: 1 1 auto;
-  height: clamp(4rem, 14vh, 11rem);
-  min-height: 0;
+  max-width: 32rem;
+  height: clamp(12rem, 30vh, 20rem);
   border-radius: 0.2rem;
   overflow: hidden;
   box-shadow: var(--shadow-rest);
-  opacity: 0.88;
+  opacity: 0.92;
 }
 
 .location-map iframe {
@@ -440,34 +445,6 @@ address { font-style: normal; }
    ──────────────────────────────────────────────────────────────── */
 .section--rsvp {
   background: var(--clr-ivory-warm);
-}
-
-/* RSVP has the densest content. Tighten spacing so the whole section
-   fits without internal scrolling — uses vh-based gaps so it adapts
-   to the section's actual height at every viewport. */
-.section--rsvp .section-body {
-  justify-content: center;
-  overflow: hidden;                        /* no internal scroll — everything fits */
-  padding: clamp(0.5rem, 1.2vh, 1rem) var(--sp-md);
-  gap: clamp(0.25rem, 0.9vh, 0.7rem);
-}
-
-.section--rsvp .rsvp-message    { font-size: clamp(0.82rem, 1vw, 1rem); line-height: 1.45; }
-.section--rsvp .gift-presence   { font-size: clamp(0.68rem, 0.85vw, 0.8rem); line-height: 1.4; }
-.section--rsvp .gift-text       { font-size: clamp(0.66rem, 0.82vw, 0.78rem); line-height: 1.4; }
-.section--rsvp .rsvp-thanks     { font-size: clamp(0.72rem, 0.9vw, 0.85rem); }
-
-.section--rsvp .rsvp-btn {
-  padding: 0.55em 1.5em;
-}
-
-.section--rsvp .iban-block {
-  padding: 0.45em 0.9em;
-  gap: 0.15em;
-}
-
-.section--rsvp .gift-block {
-  gap: clamp(0.2rem, 0.6vh, 0.5rem);
 }
 
 .rsvp-message {
@@ -640,22 +617,6 @@ address { font-style: normal; }
   text-align: center;
 }
 
-/* RSVP footer */
-.rsvp-footer {
-  flex-shrink: 0;
-}
-
-.rsvp-thanks {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(0.78rem, 1vw, 0.9rem);
-  color: var(--clr-text-soft);
-  line-height: 1.5;
-  text-align: center;
-}
-
-
 /* ────────────────────────────────────────────────────────────────
    ENTRANCE ANIMATIONS  (CSS only — no JS dependency)
    ──────────────────────────────────────────────────────────────── */
@@ -693,184 +654,29 @@ address { font-style: normal; }
 
 
 /* ────────────────────────────────────────────────────────────────
-   RESPONSIVE — Tablet portrait  (height > width, ≤ 1024px)
-   Hero top 58% | location + RSVP side-by-side bottom 42%
+   RESPONSIVE — below 900px: stack location + RSVP vertically
    ──────────────────────────────────────────────────────────────── */
-@media screen and (max-width: 1024px) and (orientation: portrait) {
+@media screen and (max-width: 900px) {
 
-  .layout {
+  .right-panel {
     grid-template-columns: 1fr;
-    grid-template-rows: 58dvh 42dvh;
   }
 
-  .right-panel {
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr;
-    height: 42dvh;
+  .right-panel > .section {
+    min-height: auto;
   }
-
-  .hero__content {
-    gap: clamp(0.25rem, 0.8vh, 0.6rem);
-    padding: var(--sp-md);
-  }
-
-  .hero__photo {
-    width: min(50%, 18rem);
-  }
-
-  .hero__photo img {
-    max-height: 22vh;
-  }
-
-  /* Hide verse on tight portrait to give photo + names room */
-  .hero__verse {
-    display: none;
-  }
-
-  .section-body {
-    padding: var(--sp-sm) var(--sp-sm);
-    gap: clamp(0.2rem, 0.6vh, 0.5rem);
-  }
-
-  .location-map {
-    max-height: 8rem;
-    min-height: 3rem;
-  }
-
-  /* No lift — sections share a row, lifting gaps */
-  .section--location:hover,
-  .section--rsvp:hover {
-    transform: none;
-  }
-}
-
-
-/* ────────────────────────────────────────────────────────────────
-   RESPONSIVE — Tablet landscape  (768–1199px, landscape)
-   Same desktop layout, tighter spacing
-   ──────────────────────────────────────────────────────────────── */
-@media screen and (min-width: 768px) and (max-width: 1199px) and (orientation: landscape) {
-
-  .section-body {
-    padding: var(--sp-sm) var(--sp-sm);
-    gap: clamp(0.25rem, 0.8vh, 0.6rem);
-  }
-
-  .hero__content {
-    padding: var(--sp-md);
-    gap: clamp(0.3rem, 0.8vh, 0.6rem);
-  }
-
-  .hero__photo {
-    width: min(55%, 20rem);
-  }
-
-  .hero__photo img {
-    max-height: 30vh;
-  }
-
-  .location-map {
-    max-height: 9rem;
-    min-height: 3rem;
-  }
-}
-
-
-/* ────────────────────────────────────────────────────────────────
-   RESPONSIVE — Short landscape  (phones in landscape, height ≤ 500px)
-   Force single column + scroll — too short for side-by-side
-   ──────────────────────────────────────────────────────────────── */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-
-  body {
-    overflow-y: auto;
-    height: auto;
-  }
-
-  .layout {
-    display: block;
-    height: auto;
-  }
-
-  .section--hero {
-    height: auto;
-    min-height: 100dvh;
-  }
-
-  .right-panel {
-    display: block;
-    height: auto;
-  }
-
-  .section--location,
-  .section--rsvp {
-    height: auto;
-    min-height: 100dvh;
-  }
-
-  .section-body {
-    padding: var(--sp-lg) var(--sp-xl);
-    justify-content: center;
-  }
-
-  .hero__content {
-    padding: var(--sp-md) var(--sp-xl);
-    min-height: 100dvh;
-    justify-content: center;
-  }
-
-  .hero__photo {
-    width: min(40%, 16rem);
-  }
-
-  .hero__photo img {
-    max-height: 50vh;
-  }
-
-  .location-map {
-    max-height: 14rem;
-  }
-
-  /* No hover effects on touch */
-  .section--location:hover,
-  .section--rsvp:hover { transform: none; }
-  .layout:has(.section:hover) .section { filter: none; }
 }
 
 
 /* ────────────────────────────────────────────────────────────────
    RESPONSIVE — Mobile  (≤ 767px, any orientation)
-   Single column, scrollable
+   Use svh on the hero to avoid Chrome Android URL-bar jank.
    ──────────────────────────────────────────────────────────────── */
 @media screen and (max-width: 767px) {
 
-  body {
-    overflow-y: auto;
-    height: auto;
-    min-height: 100dvh;
-  }
-
-  .layout {
-    display: block;
-    height: auto;
-  }
-
-  /* Use svh (small viewport height) to avoid jank when Chrome Android
-     hides/shows the URL bar on scroll — dvh recomputes and causes reflow. */
   .section--hero {
     height: 100svh;
     min-height: 26rem;
-  }
-
-  .right-panel {
-    display: block;
-    height: auto;
-  }
-
-  .section--location,
-  .section--rsvp {
-    height: auto;
-    min-height: 70svh;
   }
 
   .section-body {
