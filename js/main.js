@@ -29,7 +29,7 @@ function initParallax() {
   function animate() {
     currentX = lerp(currentX, targetX, 0.07);
     currentY = lerp(currentY, targetY, 0.07);
-    photoImg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.06)`;
+    photoImg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.03)`;
 
     if (Math.abs(currentX - targetX) > 0.01 || Math.abs(currentY - targetY) > 0.01) {
       raf = requestAnimationFrame(animate);
