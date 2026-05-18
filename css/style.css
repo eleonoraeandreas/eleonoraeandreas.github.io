@@ -96,12 +96,11 @@ address { font-style: normal; }
 }
 
 .right-panel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: block;
 }
 
 .right-panel > .section {
-  min-height: 70dvh;
+  min-height: auto;
 }
 
 
@@ -264,10 +263,10 @@ address { font-style: normal; }
 /* Hero photo — centered, proportional */
 .hero__photo {
   flex: 0 1 auto;
-  width: min(60%, 24rem);
+  width: min(70%, 30rem);
   overflow: hidden;
   border-radius: 0.2rem;
-  box-shadow: 0 0.25rem 1.5rem rgba(58, 46, 38, 0.12);
+  box-shadow: 0 0.35rem 1.75rem rgba(58, 46, 38, 0.14);
   margin: 0;
   line-height: 0;    /* remove inline-block gap under img */
 }
@@ -275,9 +274,10 @@ address { font-style: normal; }
 .hero__photo img {
   width: 100%;
   height: auto;
-  max-height: 35vh;
+  max-height: 45vh;
   object-fit: cover;
   display: block;
+  transform-origin: left bottom;    /* anchor parallax zoom at the bottom-left corner — keeps faces + sun in frame, expands toward upper-right */
   transition: transform 0.6s var(--ease-out);
 }
 
@@ -311,11 +311,11 @@ address { font-style: normal; }
   background:
     linear-gradient(rgba(200, 216, 197, 0.6), rgba(200, 216, 197, 0.6)),
     url("../img/20260320_1244_Elegant Architectural Sketch_remix_01km5gwvfgefpaefngyrwxhj1q.png")
-      center / cover no-repeat,
+      center 32% / auto 110% no-repeat,
     var(--clr-sage);
 }
 
-/* Location text — dark warm brown against the sage+sketch backdrop */
+/* Location text — dark warm brown against the sage+sketch backdrop. */
 .section--location .section-title,
 .section--location .section-deco,
 .section--location .location-address,
@@ -329,14 +329,56 @@ address { font-style: normal; }
 .section--location .location-venue { color: var(--clr-text); font-weight: 500; }
 .section--location .map-link { opacity: 1; font-weight: 500; }
 
-/* Info group (address + schedule) — flex for density control */
+/* Legibility card: soft ivory backdrop behind the address + schedule block
+   so the data reads cleanly over the foliage parts of the sketch.
+   Semi-transparent so the sketch still shows through. */
+.section--location .location-info {
+  padding: var(--sp-sm) var(--sp-md);
+  border-radius: 0.25rem;
+}
+
+/* Section title + deco glyph stay card-less — they sit higher up where the
+   sketch is calmer. A soft ivory glow on the letters is enough to separate
+   them from the background without an explicit card. */
+.section--location .section-title,
+.section--location .section-deco {
+  text-shadow:
+    0 0 0.4em rgba(250, 247, 242, 0.85),
+    0 0 0.2em rgba(250, 247, 242, 0.9);
+}
+
+/* Info + map row — side by side on wide screens, stacked on narrow.
+   grid-template-areas keeps info aligned to the map row only, so info's
+   vertical center matches the map's center (the link sits below, in its
+   own row, and is not part of the symmetric pairing). */
+.location-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-areas:
+    "info map"
+    ".    link";
+  column-gap: var(--sp-lg);
+  row-gap: var(--sp-xs);
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.location-row .location-info { grid-area: info; }
+.location-row .location-map  { grid-area: map; }
+.location-row .map-link      { grid-area: link; }
+
+/* Info group (address + schedule) — flex for density control.
+   min-height matches .location-map so the two columns read as symmetric. */
 .location-info {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--sp-xs);
   flex-shrink: 1;
-  min-height: 0;
+  min-height: clamp(7rem, 17vh, 10.5rem);
 }
 
 .location-address {
@@ -369,7 +411,7 @@ address { font-style: normal; }
 
 .location-schedule__row {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: baseline;
   gap: 0.5em;
 }
@@ -397,8 +439,8 @@ address { font-style: normal; }
    letting the parking note + map link stay visible. */
 .location-map {
   width: 100%;
-  max-width: 32rem;
-  height: clamp(12rem, 30vh, 20rem);
+  max-width: 24rem;
+  height: clamp(7rem, 17vh, 10.5rem);
   border-radius: 0.2rem;
   overflow: hidden;
   box-shadow: var(--shadow-rest);
@@ -692,6 +734,18 @@ address { font-style: normal; }
   }
 
   .right-panel > .section {
+    min-height: auto;
+  }
+
+  .location-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "info"
+      "map"
+      "link";
+  }
+
+  .location-info {
     min-height: auto;
   }
 }

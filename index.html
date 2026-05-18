@@ -61,10 +61,10 @@
 
         <figure class="hero__photo">
           <img
-            src="https://picsum.photos/seed/eleonora-andreas/800/500"
+            src="img/eleonoraeandreas.jpeg"
             alt="Foto di Eleonora e Andreas"
-            width="800"
-            height="500"
+            width="1024"
+            height="768"
             loading="eager">
         </figure>
 
@@ -92,43 +92,45 @@
             <div class="section-rule" aria-hidden="true"></div>
           </header>
 
-          <div class="location-info">
-            <address class="location-address">
-              <strong class="location-venue">Vigna Bogiet</strong>
-              <span>Strada Val S. Martino Sup., 60, 10131 Torino (TO)</span>
-            </address>
+          <div class="location-row">
+            <div class="location-info">
+              <address class="location-address">
+                <strong class="location-venue">Vigna Bogiet</strong>
+                <span>Strada Val S. Martino Sup., 60, 10131 Torino (TO)</span>
+              </address>
 
-            <dl class="location-schedule">
-              <div class="location-schedule__row">
-                <dt>Cerimonia</dt>
-                <dd>ore 16:30</dd>
-              </div>
-              <div class="location-schedule__row">
-                <dt>Ricevimento</dt>
-                <dd>A seguire</dd>
-              </div>
-            </dl>
+              <dl class="location-schedule">
+                <div class="location-schedule__row">
+                  <dt>Cerimonia</dt>
+                  <dd>ore 16:30</dd>
+                </div>
+                <div class="location-schedule__row">
+                  <dt>Ricevimento</dt>
+                  <dd>A seguire</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="location-map">
+              <iframe
+                src="https://www.google.com/maps?q=Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO&hl=it&z=15&output=embed"
+                title="Mappa: Strada Val S. Martino Sup., 60, Torino"
+                loading="eager"
+                fetchpriority="high"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+
+            <a
+              href="https://www.google.com/maps/place/Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO,+Italy/@45.0604905,7.7187541,806m/data=!3m2!1e3!4b1!4m6!3m5!1s0x478872eba3f43833:0xca5c7841f860b6f4!8m2!3d45.0604867!4d7.721329!16s%2Fg%2F11c2gj1sdj?hl=en-GB&entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
+              class="map-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Apri il percorso in Google Maps (si apre in nuova scheda)">
+              Apri in Google Maps →
+            </a>
           </div>
-
-          <div class="location-map">
-            <iframe
-              src="https://www.google.com/maps?q=Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO&hl=it&z=15&output=embed"
-              title="Mappa: Strada Val S. Martino Sup., 60, Torino"
-              loading="eager"
-              fetchpriority="high"
-              allowfullscreen
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-
-          <a
-            href="https://www.google.com/maps/place/Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO,+Italy/@45.0604905,7.7187541,806m/data=!3m2!1e3!4b1!4m6!3m5!1s0x478872eba3f43833:0xca5c7841f860b6f4!8m2!3d45.0604867!4d7.721329!16s%2Fg%2F11c2gj1sdj?hl=en-GB&entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
-            class="map-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Apri il percorso in Google Maps (si apre in nuova scheda)">
-            Apri in Google Maps →
-          </a>
 
           <p class="location-parking">
             <span class="location-parking__label">Parcheggio</span>
@@ -156,7 +158,7 @@
           </p>
 
           <a
-            href="https://forms.google.com/PLACEHOLDER"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSe9wHDhRwGMlWLGzZm1XkEaBy3ExzRtSXIeuggwt2vX_wMZqw/viewform"
             class="rsvp-btn"
             target="_blank"
             rel="noopener noreferrer"
@@ -181,9 +183,9 @@
               id="ibanBlock"
               type="button"
               aria-label="Codice IBAN — clicca per copiare l'IBAN">
-              <span class="iban-row"><span class="iban-label">Intestatario</span><span class="iban-value">Da definire</span></span>
-              <span class="iban-row"><span class="iban-label">IBAN</span><span class="iban-value" id="ibanValue">Da definire</span></span>
-              <span class="iban-row"><span class="iban-label">Banca</span><span class="iban-value">Da definire</span></span>
+              <span class="iban-row"><span class="iban-label">Intestatario</span><span class="iban-value">Eleonora Catellani, Andreas Wolf Ciavarra</span></span>
+              <span class="iban-row"><span class="iban-label">IBAN</span><span class="iban-value" id="ibanValue">IT71F0306930370100000074007</span></span>
+              <span class="iban-row"><span class="iban-label">Banca</span><span class="iban-value">Intesa Sanpaolo</span></span>
               <span class="iban-hint" aria-live="polite">clicca per copiare l'IBAN</span>
             </button>
           </div>
