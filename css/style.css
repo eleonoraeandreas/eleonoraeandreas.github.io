@@ -91,8 +91,7 @@ address { font-style: normal; }
 }
 
 .section--hero {
-  height: 100dvh;
-  min-height: 32rem;
+  min-height: 100dvh;
 }
 
 .right-panel {
@@ -274,7 +273,6 @@ address { font-style: normal; }
 .hero__photo img {
   width: 100%;
   height: auto;
-  max-height: 45vh;
   object-fit: cover;
   display: block;
   transform-origin: left bottom;    /* anchor parallax zoom at the bottom-left corner — keeps faces + sun in frame, expands toward upper-right */
@@ -333,8 +331,13 @@ address { font-style: normal; }
    so the data reads cleanly over the foliage parts of the sketch.
    Semi-transparent so the sketch still shows through. */
 .section--location .location-info {
-  padding: var(--sp-sm) var(--sp-md);
-  border-radius: 0.25rem;
+  padding: var(--sp-sm) var(--sp-lg);
+  background: rgba(250, 247, 242, 0.42);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(250, 247, 242, 0.5);
+  border-radius: 0.35rem;
+  box-shadow: 0 0.3rem 1.2rem rgba(58, 46, 38, 0.08);
 }
 
 /* Section title + deco glyph stay card-less — they sit higher up where the
@@ -370,7 +373,8 @@ address { font-style: normal; }
 .location-row .map-link      { grid-area: link; }
 
 /* Info group (address + schedule) — flex for density control.
-   min-height matches .location-map so the two columns read as symmetric. */
+   Natural height: align-items: center on .location-row pairs it
+   vertically against the circular map. No min-height needed. */
 .location-info {
   display: flex;
   flex-direction: column;
@@ -378,16 +382,15 @@ address { font-style: normal; }
   justify-content: center;
   gap: var(--sp-xs);
   flex-shrink: 1;
-  min-height: clamp(7rem, 17vh, 10.5rem);
 }
 
 .location-address {
   display: flex;
   flex-direction: column;
-  gap: 0.15em;
+  gap: 0.25em;
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
-  font-weight: 500;
+  font-size: clamp(0.78rem, 1.05vw, 0.92rem);
+  font-weight: 400;
   color: var(--clr-text);
   line-height: 1.5;
 }
@@ -397,7 +400,8 @@ address { font-style: normal; }
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+  font-size: clamp(1rem, 1.55vw, 1.4rem);
+  line-height: 1.2;
   color: var(--clr-accent);
 }
 
@@ -418,33 +422,34 @@ address { font-style: normal; }
 
 .location-schedule__row dt {
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: clamp(0.68rem, 0.92vw, 0.8rem);
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  font-size: clamp(0.66rem, 0.88vw, 0.76rem);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--clr-accent);
+  opacity: 0.85;
   white-space: nowrap;
 }
 
 .location-schedule__row dd {
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(0.78rem, 1.05vw, 0.95rem);
-  color: var(--clr-text-soft);
+  font-weight: 400;
+  font-size: clamp(0.78rem, 1.05vw, 0.92rem);
+  color: var(--clr-text);
   white-space: nowrap;
 }
 
-/* Map — flex-shrinkable, proportional height.
-   Uses vh so the map gives up space when the section is short,
-   letting the parking note + map link stay visible. */
+/* Map — circular crop. Square aspect + 50% border-radius gives a perfect
+   circle. `isolation: isolate` forces a stacking context so Safari/iOS
+   actually clips the iframe to the border-radius (a known WebKit bug). */
 .location-map {
-  width: 100%;
-  max-width: 24rem;
-  height: clamp(7rem, 17vh, 10.5rem);
-  border-radius: 0.2rem;
+  width: clamp(11rem, 18vw, 15rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
   overflow: hidden;
   box-shadow: var(--shadow-rest);
   background: var(--clr-sage);
+  isolation: isolate;
 }
 
 .location-map iframe {
@@ -743,6 +748,7 @@ address { font-style: normal; }
       "info"
       "map"
       "link";
+    row-gap: clamp(0.75rem, 4vw, 1.5rem);
   }
 
   .location-info {
@@ -758,8 +764,7 @@ address { font-style: normal; }
 @media screen and (max-width: 767px) {
 
   .section--hero {
-    height: 100svh;
-    min-height: 26rem;
+    min-height: 100svh;
   }
 
   .section-body {
@@ -774,10 +779,6 @@ address { font-style: normal; }
 
   .hero__photo {
     width: min(80%, 20rem);
-  }
-
-  .hero__photo img {
-    max-height: 28vh;
   }
 
   .location-map {
