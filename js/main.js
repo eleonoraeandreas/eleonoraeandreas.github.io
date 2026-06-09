@@ -3,8 +3,150 @@
 /* ================================================================
    main.js — Wedding landing page enhancements
    Pure vanilla JS. No dependencies. Progressive enhancement only:
-   the page is fully functional without this script.
+   the page is fully functional (in Italian) without this script.
    ================================================================ */
+
+
+// ────────────────────────────────────────────────────────────────
+// I18N — Italian / German dictionary
+// Italian is also hard-coded in index.html as the no-JS fallback;
+// German lives only here. Keys map to [data-i18n*] attributes.
+//   data-i18n            → textContent
+//   data-i18n-html       → innerHTML (only where a <br> is needed)
+//   data-i18n-aria-label → aria-label attribute
+//   data-i18n-title      → title attribute
+//   data-i18n-alt        → alt attribute
+// ────────────────────────────────────────────────────────────────
+const I18N = {
+  it: {
+    'hero.aria':            'Benvenuto',
+    'hero.eyebrow':         'Ci sposiamo!!',
+    'hero.dateline':        'Sabato 12 Settembre 2026',
+    'hero.photoAlt':        'Foto di Eleonora e Andreas',
+    'hero.verse':           "Non vediamo l'ora di festeggiare questo giorno speciale insieme a voi!",
+    'hero.place':           'Con tutto il nostro affetto,<br>Ele e Andre',
+
+    'location.aria':          'Luogo e data',
+    'location.title':         'Dove & Quando',
+    'location.ceremony':      'Cerimonia',
+    'location.ceremonyTime':  'ore 16:30',
+    'location.reception':     'Ricevimento',
+    'location.receptionTime': 'A seguire',
+    'location.mapTitle':      'Mappa: Strada Val S. Martino Sup., 60, Torino',
+    'location.mapLinkAria':   'Apri il percorso in Google Maps (si apre in nuova scheda)',
+    'location.mapLink':       'Apri in Google Maps →',
+    'location.parkingLabel':  'Parcheggio',
+    'location.parkingText':   'Dettagli per il parcheggio e possibile servizio spola',
+
+    'rsvp.aria':       'Conferma presenza',
+    'rsvp.message':    'Vi preghiamo di confermare la vostra presenza entro martedì 30 giugno',
+    'rsvp.btn':        'Conferma la tua presenza',
+    'rsvp.btnAria':    'Conferma la tua presenza — si apre Google Forms in nuova scheda',
+    'rsvp.presence':   'La vostra presenza è ciò che più conta per rendere questa giornata memorabile!',
+    'rsvp.giftText':   'Se alcuni di voi desiderassero farci un regalo, potete contribuire al nostro sogno di comprare una casa nel verde delle nostre colline.',
+    'rsvp.ibanAria':   "Codice IBAN — clicca per copiare l'IBAN",
+    'rsvp.ibanHolder': 'Intestatario',
+    'rsvp.ibanBank':   'Banca',
+    'rsvp.ibanHint':   "clicca per copiare l'IBAN",
+    'rsvp.ibanCopied':   'copiato ✓',
+    'rsvp.ibanSelected': 'selezionato',
+
+    'cd.today': "è il giorno!",
+    'cd.one':   '- manca 1 giorno!',
+    'cd.many':  '- mancano {n} giorni!',
+  },
+
+  de: {
+    'hero.aria':            'Willkommen',
+    'hero.eyebrow':         'Wir heiraten!!',
+    'hero.dateline':        'Samstag, 12. September 2026',
+    'hero.photoAlt':        'Foto von Eleonora und Andreas',
+    'hero.verse':           'Wir können es kaum erwarten, diesen besonderen Tag gemeinsam mit euch zu feiern!',
+    'hero.place':           'Mit all unserer Liebe,<br>Ele und Andre',
+
+    'location.aria':          'Ort und Datum',
+    'location.title':         'Wo & Wann',
+    'location.ceremony':      'Trauung',
+    'location.ceremonyTime':  '16:30 Uhr',
+    'location.reception':     'Empfang',
+    'location.receptionTime': 'Im Anschluss',
+    'location.mapTitle':      'Karte: Strada Val S. Martino Sup., 60, Turin',
+    'location.mapLinkAria':   'Route in Google Maps öffnen (öffnet in neuem Tab)',
+    'location.mapLink':       'In Google Maps öffnen →',
+    'location.parkingLabel':  'Parkplatz',
+    'location.parkingText':   'Informationen zu Parkplatz und möglichem Shuttle-Service',
+
+    'rsvp.aria':       'Teilnahmebestätigung',
+    'rsvp.message':    'Bitte bestätigt eure Teilnahme bis Dienstag, den 30. Juni',
+    'rsvp.btn':        'Teilnahme bestätigen',
+    'rsvp.btnAria':    'Bestätige deine Teilnahme — öffnet Google Forms in neuem Tab',
+    'rsvp.presence':   'Eure Anwesenheit ist das Wichtigste, um diesen Tag unvergesslich zu machen!',
+    'rsvp.giftText':   'Falls einige von euch uns ein Geschenk machen möchten, könnt ihr zu unserem Traum beitragen, ein Haus im Grünen unserer Hügel zu kaufen.',
+    'rsvp.ibanAria':   'IBAN — zum Kopieren anklicken',
+    'rsvp.ibanHolder': 'Kontoinhaber',
+    'rsvp.ibanBank':   'Bank',
+    'rsvp.ibanHint':   'zum Kopieren der IBAN anklicken',
+    'rsvp.ibanCopied':   'kopiert ✓',
+    'rsvp.ibanSelected': 'ausgewählt',
+
+    'cd.today': 'es ist soweit!',
+    'cd.one':   '- noch 1 Tag!',
+    'cd.many':  '- noch {n} Tage!',
+  },
+};
+
+const currentLang = () => (document.documentElement.lang === 'de' ? 'de' : 'it');
+const t = (key) => (I18N[currentLang()][key] ?? I18N.it[key] ?? '');
+
+
+// ────────────────────────────────────────────────────────────────
+// LANGUAGE SWITCH — apply a language to the whole page
+// ────────────────────────────────────────────────────────────────
+function setLanguage(lang) {
+  const dict = I18N[lang];
+  if (!dict) return;
+
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const v = dict[el.getAttribute('data-i18n')];
+    if (v != null) el.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+    const v = dict[el.getAttribute('data-i18n-html')];
+    if (v != null) el.innerHTML = v;
+  });
+  ['aria-label', 'title', 'alt'].forEach((attr) => {
+    document.querySelectorAll(`[data-i18n-${attr}]`).forEach((el) => {
+      const v = dict[el.getAttribute(`data-i18n-${attr}`)];
+      if (v != null) el.setAttribute(attr, v);
+    });
+  });
+
+  // JS-generated, language-dependent content
+  setCountdown(lang);
+
+  // Reflect the active flag
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    const active = btn.dataset.lang === lang;
+    btn.classList.toggle('is-active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+
+  try { localStorage.setItem('lang', lang); } catch { /* private mode */ }
+}
+
+function initLangSwitch() {
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch { /* private mode */ }
+  const initial = (saved === 'de' || saved === 'it') ? saved : 'it';
+
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+
+  setLanguage(initial);
+}
 
 
 // ────────────────────────────────────────────────────────────────
@@ -59,7 +201,8 @@ function initParallax() {
 
 // ────────────────────────────────────────────────────────────────
 // IBAN COPY — click the IBAN block to copy to clipboard
-// Falls back to native text selection if Clipboard API unavailable
+// Falls back to native text selection if Clipboard API unavailable.
+// Feedback + restored hint follow the active language.
 // ────────────────────────────────────────────────────────────────
 function initIbanCopy() {
   const block   = document.getElementById('ibanBlock');
@@ -68,21 +211,19 @@ function initIbanCopy() {
 
   if (!block || !valueEl || !hintEl) return;
 
-  const originalHint = hintEl.textContent;
-
   block.addEventListener('click', async () => {
     const text = valueEl.textContent.trim();
 
     try {
       await navigator.clipboard.writeText(text);
-      showFeedback('copiato ✓', 'rgba(139, 115, 85, 0.18)');
+      showFeedback(t('rsvp.ibanCopied'), 'rgba(139, 115, 85, 0.18)');
     } catch {
       const range = document.createRange();
       range.selectNode(valueEl);
       const sel = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(range);
-      showFeedback('selezionato', '');
+      showFeedback(t('rsvp.ibanSelected'), '');
     }
   });
 
@@ -92,7 +233,7 @@ function initIbanCopy() {
 
     clearTimeout(block._copyTimer);
     block._copyTimer = setTimeout(() => {
-      hintEl.textContent     = originalHint;
+      hintEl.textContent     = t('rsvp.ibanHint');
       block.style.background = '';
     }, 2200);
   }
@@ -100,35 +241,32 @@ function initIbanCopy() {
 
 
 // ────────────────────────────────────────────────────────────────
-// COUNTDOWN — "tra X giorni" appended to the date line
+// COUNTDOWN — calendar-date based, localized to the active language
 // ────────────────────────────────────────────────────────────────
-function initDateline() {
-  const dateLine = document.querySelector('.hero__dateline');
-  if (!dateLine) return;
-  dateLine.textContent = 'Sabato 12 Settembre 2026';
-}
-
-function initCountdown() {
+function setCountdown(lang) {
   const target = document.querySelector('.countdown-footer__text');
   if (!target) return;
 
-  const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const startOfDay  = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const WEDDING_DAY = startOfDay(new Date(2026, 8, 12));
   const today       = startOfDay(new Date());
   const days        = Math.round((WEDDING_DAY - today) / 86400000);
 
-  let label;
-  if (days < 0)        return;
-  else if (days === 0) label = "it's the day!";
-  else if (days === 1) label = '- 1 day to go!';
-  else                 label = `- ${days.toLocaleString('en-US')} days to go!`;
+  const dict = I18N[lang] || I18N.it;
+  const locale = lang === 'de' ? 'de-DE' : 'it-IT';
+
+  let label = '';
+  if (days < 0)        label = '';
+  else if (days === 0) label = dict['cd.today'];
+  else if (days === 1) label = dict['cd.one'];
+  else                 label = dict['cd.many'].replace('{n}', days.toLocaleString(locale));
 
   target.textContent = label;
 }
 
 
 // ────────────────────────────────────────────────────────────────
-// INIT
+// MAP FADE — mask the iframe white-flash with a fade-in
 // ────────────────────────────────────────────────────────────────
 function initMapFade() {
   const iframe = document.querySelector('.location-map iframe');
@@ -137,10 +275,13 @@ function initMapFade() {
   else iframe.addEventListener('load', () => iframe.classList.add('is-loaded'), { once: true });
 }
 
+
+// ────────────────────────────────────────────────────────────────
+// INIT
+// ────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  initLangSwitch();   // sets text, dateline, countdown, flag state
   initParallax();
   initIbanCopy();
-  initDateline();
-  initCountdown();
   initMapFade();
 });
