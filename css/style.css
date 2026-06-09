@@ -17,8 +17,8 @@
   --clr-ivory-warm:   #F3EDE1;
   --clr-sage:         #C8D8C5;
   --clr-text:         #3A2E26;
-  --clr-text-soft:    #7A6E65;
-  --clr-accent:       #8B7355;
+  --clr-text-soft:    #5E544B;   /* darkened from #7A6E65 — overall legibility, esp. on sage */
+  --clr-accent:       #7C6648;   /* slightly darkened from #8B7355 */
   --clr-accent-lt:    #A68B5B;
   --clr-gold:         #C4A969;
   --clr-white:        #FFFFFF;
@@ -55,9 +55,9 @@
 }
 
 html {
-  /* Root scales gently with viewport so rem-based clamps read larger
-     on wide screens without starving the fixed-height right panel. */
-  font-size: clamp(106.25%, 0.95rem + 0.2vw, 118.75%);
+  /* Root scales gently with viewport so every rem-based text clamp reads
+     a little larger across the whole page (overall legibility lift, ~4%). */
+  font-size: clamp(110%, 0.99rem + 0.21vw, 123.5%);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -196,14 +196,18 @@ address { font-style: normal; }
 
 /* Lift on smaller sections */
 .section--location,
-.section--rsvp {
+.section--rsvp,
+.section--parking,
+.section--gift {
   transition:
     filter     var(--t-mid),
     box-shadow var(--t-mid),
     transform  var(--t-mid);
 }
 .section--location:hover,
-.section--rsvp:hover {
+.section--rsvp:hover,
+.section--parking:hover,
+.section--gift:hover {
   transform: translateY(-0.2rem);
 }
 
@@ -240,7 +244,7 @@ address { font-style: normal; }
 .section-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.1rem, 1.8vw, 1.7rem);
+  font-size: clamp(1.25rem, 2vw, 1.9rem);
   color: var(--clr-text);
   letter-spacing: 0.04em;
 }
@@ -250,14 +254,6 @@ address { font-style: normal; }
   height: 1px;
   background: var(--clr-accent);
   opacity: 0.35;
-}
-
-.section-hr {
-  width: 1.75rem;
-  border: none;
-  border-top: 1px solid var(--clr-text);
-  opacity: 0.1;
-  flex-shrink: 0;
 }
 
 
@@ -286,8 +282,12 @@ address { font-style: normal; }
 .hero__eyebrow {
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: clamp(0.55rem, 0.85vw, 0.75rem);
-  letter-spacing: 0.28em;
+  /* Announcement kicker. Sized so its cap-height lands ~1.05× the x-height of
+     the names (the "n" in Eleonora/Andreas) — a hair taller, no more. Tracks
+     the names proportionally (f≈0.584 of .hero__names) so the ratio holds at
+     every width. Measured ratios: Cormorant n=0.399em, Raleway CAP=0.715em. */
+  font-size: clamp(1.4rem, 2.92vw, 2.92rem);
+  letter-spacing: 0.16em;   /* tightened from 0.28em — at this size the wide tracking sprawled */
   text-transform: uppercase;
   color: var(--clr-text-soft);
 }
@@ -320,7 +320,7 @@ address { font-style: normal; }
 .hero__dateline {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: clamp(0.62rem, 0.95vw, 0.82rem);
+  font-size: clamp(0.72rem, 1.05vw, 0.92rem);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--clr-accent);
@@ -350,7 +350,7 @@ address { font-style: normal; }
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(0.95rem, 1.3vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.42vw, 1.48rem);
   line-height: 1.7;
   color: var(--clr-text-soft);
   max-width: 38ch;
@@ -359,11 +359,11 @@ address { font-style: normal; }
 .hero__place {
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: clamp(0.55rem, 0.8vw, 0.68rem);
+  font-size: clamp(0.64rem, 0.9vw, 0.78rem);
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--clr-text-soft);
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
 
@@ -385,10 +385,8 @@ address { font-style: normal; }
 .section--location .section-deco,
 .section--location .location-address,
 .section--location .map-link,
-.section--location .location-parking,
 .section--location .location-schedule__row dt,
-.section--location .location-schedule__row dd,
-.section--location .location-parking__label {
+.section--location .location-schedule__row dd {
   color: var(--clr-text);
 }
 .section--location .location-venue { color: var(--clr-text); font-weight: 500; }
@@ -551,27 +549,33 @@ address { font-style: normal; }
   text-underline-offset: 0.2em;
 }
 
-/* Parking note — compact, sits below map link */
-.location-parking {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15em;
-  font-family: var(--font-body);
-  font-weight: 300;
-  font-size: clamp(0.6rem, 0.82vw, 0.72rem);
-  color: var(--clr-text-soft);
-  line-height: 1.4;
-  max-width: 22rem;
-  flex-shrink: 0;
+/* ────────────────────────────────────────────────────────────────
+   SECTIONS · PARKING & GIFT (standalone light sections)
+   Continue the alternating background rhythm:
+   hero (ivory) → location (sage) → parking (warm ivory)
+   → rsvp (sage) → gift (warm ivory).
+   ──────────────────────────────────────────────────────────────── */
+.section--parking,
+.section--gift {
+  background: var(--clr-ivory-warm);
 }
 
-.location-parking__label {
-  font-weight: 500;
-  font-size: clamp(0.55rem, 0.78vw, 0.65rem);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--clr-accent);
+/* Generic descriptive body text — ONE consistent treatment everywhere it
+   appears: parking note, RSVP request line, gift text, RSVP presence line.
+   Anything that *represents* data keeps its own style (venue name, schedule
+   label/value, IBAN rows). The only remaining italic-Cormorant "message" is
+   the hero verse. */
+.parking-text,
+.rsvp-message,
+.gift-text,
+.gift-presence {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.92rem, 1.2vw, 1.08rem);
+  line-height: 1.6;
+  color: var(--clr-text-soft);
+  text-align: center;
+  max-width: 44ch;
 }
 
 
@@ -579,25 +583,11 @@ address { font-style: normal; }
    SECTION 3 · RSVP & IBAN
    ──────────────────────────────────────────────────────────────── */
 .section--rsvp {
-  background: var(--clr-ivory-warm);
+  background: var(--clr-sage);
 }
 
-.rsvp-message {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(0.9rem, 1.15vw, 1.15rem);
-  line-height: 1.65;
-  color: var(--clr-text-soft);
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.rsvp-message strong {
-  font-style: normal;
-  font-weight: 500;
-  color: var(--clr-text);
-}
+/* .rsvp-message uses the unified descriptive-body-text rule above — same font
+   and style as the gift presence line (no longer italic Cormorant). */
 
 /* RSVP button — primary CTA */
 .rsvp-btn {
@@ -660,36 +650,18 @@ address { font-style: normal; }
   letter-spacing: 0.04em;
 }
 
-.gift-text {
-  font-family: var(--font-body);
-  font-weight: 300;
-  font-size: clamp(0.72rem, 0.9vw, 0.88rem);
-  color: var(--clr-text-soft);
-  line-height: 1.55;
-  text-align: center;
-}
-
-/* Gift presence line — normal-weight note above the IBAN block */
-.gift-presence {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: clamp(0.66rem, 0.9vw, 0.78rem);
-  line-height: 1.55;
-  color: var(--clr-text);
-  text-align: center;
-  max-width: 32ch;
-  flex-shrink: 0;
-}
+/* .gift-text and .gift-presence get their type from the unified
+   descriptive-body-text rule in the PARKING & GIFT section above. */
 
 /* IBAN — clickable copy card */
 .iban-block {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.25em;
+  gap: 0.4em;
   width: 100%;
-  max-width: 24rem;
-  padding: 0.6em 1em;
+  max-width: 25rem;
+  padding: 0.85em 1.2em;
   background: rgba(139, 115, 85, 0.07);
   border: 1px solid rgba(139, 115, 85, 0.18);
   border-radius: 0.2rem;
@@ -723,7 +695,7 @@ address { font-style: normal; }
 .iban-label {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: clamp(0.52rem, 0.72vw, 0.6rem);
+  font-size: clamp(0.62rem, 0.82vw, 0.72rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--clr-accent);
@@ -734,7 +706,7 @@ address { font-style: normal; }
 .iban-value {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: clamp(0.62rem, 0.88vw, 0.76rem);
+  font-size: clamp(0.82rem, 1.05vw, 0.96rem);
   color: var(--clr-text);
   letter-spacing: 0.04em;
   user-select: all;
@@ -743,12 +715,12 @@ address { font-style: normal; }
 
 .iban-hint {
   font-family: var(--font-body);
-  font-size: 0.58rem;
+  font-size: clamp(0.68rem, 0.82vw, 0.74rem);
   font-weight: 300;
   color: var(--clr-text-soft);
-  opacity: 0.6;
+  opacity: 0.7;
   letter-spacing: 0.1em;
-  margin-top: 0.15em;
+  margin-top: 0.3em;
   text-align: center;
 }
 
@@ -793,7 +765,9 @@ address { font-style: normal; }
 .hero__place    { animation: fadeUp 0.5s var(--ease-out) 0.38s both; }
 
 .section--location { animation: fadeRight 0.6s var(--ease-out) 0.1s both; }
+.section--parking  { animation: fadeRight 0.6s var(--ease-out) 0.15s both; }
 .section--rsvp     { animation: fadeRight 0.6s var(--ease-out) 0.2s both; }
+.section--gift     { animation: fadeRight 0.6s var(--ease-out) 0.25s both; }
 
 
 /* ────────────────────────────────────────────────────────────────
@@ -865,7 +839,9 @@ address { font-style: normal; }
 
   /* No hover effects on touch */
   .section--location:hover,
-  .section--rsvp:hover { transform: none; }
+  .section--rsvp:hover,
+  .section--parking:hover,
+  .section--gift:hover { transform: none; }
   .layout:has(.section:hover) .section { filter: none; }
 }
 
@@ -889,7 +865,9 @@ address { font-style: normal; }
   .hero__verse,
   .hero__place,
   .section--location,
-  .section--rsvp {
+  .section--parking,
+  .section--rsvp,
+  .section--gift {
     opacity: 1;
     transform: none;
   }
