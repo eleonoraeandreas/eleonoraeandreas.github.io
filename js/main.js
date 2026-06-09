@@ -54,8 +54,8 @@ const I18N = {
     'gift.aria': 'Regalo',
 
     'cd.today': "è il giorno!",
-    'cd.one':   ' manca 1 giorno!',
-    'cd.many':  ' mancano {n} giorni!',
+    'cd.one':   '- 1 giorno!',
+    'cd.many':  '- {n} giorni!',
   },
 
   de: {
@@ -94,8 +94,8 @@ const I18N = {
     'gift.aria': 'Geschenk',
 
     'cd.today': 'es ist soweit!',
-    'cd.one':   ' noch 1 Tag!',
-    'cd.many':  ' noch {n} Tage!',
+    'cd.one':   '- 1 Tag!',
+    'cd.many':  '- {n} Tage!',
   },
 };
 
