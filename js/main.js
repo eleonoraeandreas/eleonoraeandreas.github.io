@@ -36,7 +36,7 @@ const I18N = {
     'location.mapLinkAria':   'Apri il percorso in Google Maps (si apre in nuova scheda)',
     'location.mapLink':       'Apri in Google Maps →',
     'location.parkingLabel':  'Parcheggio',
-    'location.parkingText':   'Dettagli per il parcheggio e possibile servizio spola',
+    'location.parkingText':   'Maggiori dettagli per il parcheggio e possibile servizio navetta saranno comunicati più avanti sul sito.',
 
     'rsvp.aria':       'Conferma presenza',
     'rsvp.message':    'Vi preghiamo di confermare la vostra presenza entro martedì 30 giugno',
@@ -51,9 +51,11 @@ const I18N = {
     'rsvp.ibanCopied':   'copiato ✓',
     'rsvp.ibanSelected': 'selezionato',
 
+    'gift.aria': 'Regalo',
+
     'cd.today': "è il giorno!",
-    'cd.one':   '- manca 1 giorno!',
-    'cd.many':  '- mancano {n} giorni!',
+    'cd.one':   ' manca 1 giorno!',
+    'cd.many':  ' mancano {n} giorni!',
   },
 
   de: {
@@ -74,7 +76,7 @@ const I18N = {
     'location.mapLinkAria':   'Route in Google Maps öffnen (öffnet in neuem Tab)',
     'location.mapLink':       'In Google Maps öffnen →',
     'location.parkingLabel':  'Parkplatz',
-    'location.parkingText':   'Informationen zu Parkplatz und möglichem Shuttle-Service',
+    'location.parkingText':   'Weitere Informationen zu Parkplatz und möglichem Shuttle-Service folgen später auf der Website.',
 
     'rsvp.aria':       'Teilnahmebestätigung',
     'rsvp.message':    'Bitte bestätigt eure Teilnahme bis Dienstag, den 30. Juni',
@@ -89,9 +91,11 @@ const I18N = {
     'rsvp.ibanCopied':   'kopiert ✓',
     'rsvp.ibanSelected': 'ausgewählt',
 
+    'gift.aria': 'Geschenk',
+
     'cd.today': 'es ist soweit!',
-    'cd.one':   '- noch 1 Tag!',
-    'cd.many':  '- noch {n} Tage!',
+    'cd.one':   ' noch 1 Tag!',
+    'cd.many':  ' noch {n} Tage!',
   },
 };
 
