@@ -136,10 +136,28 @@ function setLanguage(lang) {
   try { localStorage.setItem('lang', lang); } catch { /* private mode */ }
 }
 
-function initLangSwitch() {
+// Pick the initial language. Priority:
+//   1. An explicit saved choice (the visitor used the flag toggle before) always wins.
+//   2. Otherwise auto-detect: German if the browser/device language is German
+//      (de, de-DE, de-AT, de-CH…), the reliable client-side signal — a German
+//      relative's phone/browser is set to German. Everyone else (Italy, US,
+//      anywhere non-German) gets Italian.
+// NOTE: true IP-based geolocation ("connection in Germany") is not possible on a
+// static page without a third-party API call; the browser language covers it in practice.
+function detectLanguage() {
   let saved = null;
   try { saved = localStorage.getItem('lang'); } catch { /* private mode */ }
-  const initial = (saved === 'de' || saved === 'it') ? saved : 'it';
+  if (saved === 'de' || saved === 'it') return saved;
+
+  const langs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages
+    : [navigator.language || ''];
+  const prefersGerman = langs.some((l) => /^de(-|$)/i.test(l));
+  return prefersGerman ? 'de' : 'it';
+}
+
+function initLangSwitch() {
+  const initial = detectLanguage();
 
   document.querySelectorAll('.lang-btn').forEach((btn) => {
     btn.addEventListener('click', () => setLanguage(btn.dataset.lang));

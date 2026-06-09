@@ -375,7 +375,7 @@ address { font-style: normal; }
 .section--location {
   background:
     linear-gradient(rgba(200, 216, 197, 0.6), rgba(200, 216, 197, 0.6)),
-    url("../img/20260320_1244_Elegant Architectural Sketch_remix_01km5gwvfgefpaefngyrwxhj1q.png")
+    url("../img/location-sketch.png")
       center 32% / auto 110% no-repeat,
     var(--clr-sage);
 }
