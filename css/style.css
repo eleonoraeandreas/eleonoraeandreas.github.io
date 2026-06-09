@@ -81,6 +81,73 @@ address { font-style: normal; }
 
 
 /* ────────────────────────────────────────────────────────────────
+   LANGUAGE SWITCH — sticky IT / DE flag toggle, top-right
+   Frosted ivory pill so it stays legible over both the ivory hero
+   and the sage location section. Active flag in colour, inactive
+   desaturated + faded.
+   ──────────────────────────────────────────────────────────────── */
+.lang-switch {
+  position: fixed;
+  top: clamp(0.7rem, 1.8vw, 1.25rem);
+  right: clamp(0.7rem, 1.8vw, 1.25rem);
+  z-index: 100;
+  display: flex;
+  gap: 0.5rem;
+  animation: fadeUp 0.6s var(--ease-out) 0.4s both;
+}
+
+.lang-btn {
+  display: block;
+  padding: 0.2rem;            /* invisible — just enlarges the tap target */
+  border: none;
+  background: transparent;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  line-height: 0;
+  /* Inactive: heavily desaturated + faded, but a whisper of colour
+     remains so the language stays recognisable. */
+  filter: grayscale(0.72) opacity(0.5);
+  transition:
+    filter    var(--t-fast),
+    transform var(--t-fast);
+}
+
+.lang-btn:hover {
+  filter: grayscale(0.35) opacity(0.85);
+  transform: translateY(-0.05rem);
+}
+
+.lang-btn.is-active {
+  filter: none;
+  cursor: default;
+}
+
+.lang-btn:focus-visible {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 0.12rem;
+}
+
+.lang-flag {
+  display: block;
+  width: 1.5rem;
+  height: 1rem;
+  border-radius: 0.12rem;
+  box-shadow: inset 0 0 0 1px rgba(58, 46, 38, 0.14);
+}
+
+/* Active = "selected" ring in the page's own accent (NOT a system blue),
+   with an offset so the gap shows the real background — reads cleanly over
+   both the ivory hero and the sage location section. */
+.lang-btn.is-active .lang-flag {
+  outline: 1.5px solid var(--clr-accent);
+  outline-offset: 2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(58, 46, 38, 0.12),
+    0 0.12rem 0.4rem rgba(58, 46, 38, 0.18);
+}
+
+
+/* ────────────────────────────────────────────────────────────────
    PAGE LAYOUT
    Hero takes the full viewport; location + RSVP scroll in below.
    On wide screens the two lower sections sit side by side.
@@ -854,4 +921,5 @@ address { font-style: normal; }
   }
 
   .location-map { display: none; }
+  .lang-switch  { display: none; }
 }

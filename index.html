@@ -42,34 +42,57 @@
 
 <body>
 
+  <!-- ═══════════════════════════════════════════════
+       LANGUAGE SWITCH · sticky IT / DE flag toggle
+       Active flag = colour, inactive = grayscale + faded.
+       Italian is the hard-coded default; German lives in js/main.js.
+  ════════════════════════════════════════════════ -->
+  <div class="lang-switch" role="group" aria-label="Lingua / Sprache">
+    <button class="lang-btn is-active" type="button" data-lang="it" aria-pressed="true" aria-label="Italiano" title="Italiano">
+      <svg class="lang-flag" viewBox="0 0 3 2" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <rect width="3" height="2" fill="#F1F2F1"/>
+        <rect width="1" height="2" fill="#009246"/>
+        <rect width="1" height="2" x="2" fill="#CE2B37"/>
+      </svg>
+    </button>
+    <button class="lang-btn" type="button" data-lang="de" aria-pressed="false" aria-label="Deutsch" title="Deutsch">
+      <svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <rect width="5" height="3" fill="#000000"/>
+        <rect width="5" height="1" y="1" fill="#DD0000"/>
+        <rect width="5" height="1" y="2" fill="#FFCE00"/>
+      </svg>
+    </button>
+  </div>
+
   <main class="layout" id="main-content">
 
     <!-- ═══════════════════════════════════════════════
          SECTION 1 · Hero / Welcome
     ════════════════════════════════════════════════ -->
-    <section class="section section--hero" id="welcome" aria-label="Benvenuto">
+    <section class="section section--hero" id="welcome" aria-label="Benvenuto" data-i18n-aria-label="hero.aria">
       <div class="hero__content">
 
-        <p class="hero__eyebrow">Ci sposiamo!!</p>
+        <p class="hero__eyebrow" data-i18n="hero.eyebrow">Ci sposiamo!!</p>
 
         <h1 class="hero__names">
           Eleonora<span class="hero__amp" aria-hidden="true">&amp;</span>Andreas
         </h1>
 
         <div class="hero__rule" aria-hidden="true"></div>
-        <p class="hero__dateline"></p>
+        <p class="hero__dateline" data-i18n="hero.dateline"></p>
 
         <figure class="hero__photo">
           <img
             src="img/eleonoraeandreas.jpeg"
             alt="Foto di Eleonora e Andreas"
+            data-i18n-alt="hero.photoAlt"
             width="1024"
             height="768"
             loading="eager">
         </figure>
 
-        <p class="hero__verse">Non vediamo l'ora di festeggiare questo giorno speciale insieme a voi!</p>
-        <p class="hero__place">Con tutto il nostro affetto,<br>Ele e Andre</p>
+        <p class="hero__verse" data-i18n="hero.verse">Non vediamo l'ora di festeggiare questo giorno speciale insieme a voi!</p>
+        <p class="hero__place" data-i18n-html="hero.place">Con tutto il nostro affetto,<br>Ele e Andre</p>
 
       </div>
     </section><!-- /.section--hero -->
@@ -83,12 +106,12 @@
       <!-- ─────────────────────────────────────────────
            SECTION 2 · Location
       ────────────────────────────────────────────── -->
-      <section class="section section--location" id="location" aria-label="Luogo e data">
+      <section class="section section--location" id="location" aria-label="Luogo e data" data-i18n-aria-label="location.aria">
         <div class="section-body">
 
           <header class="section-header">
             <span class="section-deco" aria-hidden="true">◈</span>
-            <h2 class="section-title">Dove &amp; Quando</h2>
+            <h2 class="section-title" data-i18n="location.title">Dove &amp; Quando</h2>
             <div class="section-rule" aria-hidden="true"></div>
           </header>
 
@@ -101,12 +124,12 @@
 
               <dl class="location-schedule">
                 <div class="location-schedule__row">
-                  <dt>Cerimonia</dt>
-                  <dd>ore 16:30</dd>
+                  <dt data-i18n="location.ceremony">Cerimonia</dt>
+                  <dd data-i18n="location.ceremonyTime">ore 16:30</dd>
                 </div>
                 <div class="location-schedule__row">
-                  <dt>Ricevimento</dt>
-                  <dd>A seguire</dd>
+                  <dt data-i18n="location.reception">Ricevimento</dt>
+                  <dd data-i18n="location.receptionTime">A seguire</dd>
                 </div>
               </dl>
             </div>
@@ -115,6 +138,7 @@
               <iframe
                 src="https://www.google.com/maps?q=Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO&hl=it&z=15&output=embed"
                 title="Mappa: Strada Val S. Martino Sup., 60, Torino"
+                data-i18n-title="location.mapTitle"
                 loading="eager"
                 fetchpriority="high"
                 allowfullscreen
@@ -127,14 +151,16 @@
               class="map-link"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Apri il percorso in Google Maps (si apre in nuova scheda)">
+              aria-label="Apri il percorso in Google Maps (si apre in nuova scheda)"
+              data-i18n-aria-label="location.mapLinkAria"
+              data-i18n="location.mapLink">
               Apri in Google Maps →
             </a>
           </div>
 
           <p class="location-parking">
-            <span class="location-parking__label">Parcheggio</span>
-            Dettagli per il parcheggio e possibile servizio spola
+            <span class="location-parking__label" data-i18n="location.parkingLabel">Parcheggio</span>
+            <span data-i18n="location.parkingText">Dettagli per il parcheggio e possibile servizio spola</span>
           </p>
 
         </div>
@@ -144,7 +170,7 @@
       <!-- ─────────────────────────────────────────────
            SECTION 3 · RSVP & IBAN
       ────────────────────────────────────────────── -->
-      <section class="section section--rsvp" id="rsvp" aria-label="Conferma presenza">
+      <section class="section section--rsvp" id="rsvp" aria-label="Conferma presenza" data-i18n-aria-label="rsvp.aria">
         <div class="section-body">
 
           <header class="section-header">
@@ -153,8 +179,8 @@
             <div class="section-rule" aria-hidden="true"></div>
           </header>
 
-          <p class="rsvp-message">
-            Vi preghiamo di confermare la vostra presenza entro mercoledì 15 luglio
+          <p class="rsvp-message" data-i18n="rsvp.message">
+            Vi preghiamo di confermare la vostra presenza entro martedì 30 giugno
           </p>
 
           <a
@@ -162,19 +188,20 @@
             class="rsvp-btn"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Conferma la tua presenza — si apre Google Forms in nuova scheda">
-            Conferma la tua presenza
+            aria-label="Conferma la tua presenza — si apre Google Forms in nuova scheda"
+            data-i18n-aria-label="rsvp.btnAria">
+            <span data-i18n="rsvp.btn">Conferma la tua presenza</span>
             <span class="rsvp-btn__arrow" aria-hidden="true">→</span>
           </a>
 
-          <p class="gift-presence">
+          <p class="gift-presence" data-i18n="rsvp.presence">
             La vostra presenza è ciò che più conta per rendere questa giornata memorabile!
           </p>
 
           <hr class="section-hr" aria-hidden="true">
 
           <div class="gift-block">
-            <p class="gift-text">
+            <p class="gift-text" data-i18n="rsvp.giftText">
               Se alcuni di voi desiderassero farci un regalo, potete contribuire al nostro sogno di comprare una casa nel verde delle nostre colline.
             </p>
 
@@ -182,11 +209,12 @@
               class="iban-block"
               id="ibanBlock"
               type="button"
-              aria-label="Codice IBAN — clicca per copiare l'IBAN">
-              <span class="iban-row"><span class="iban-label">Intestatario</span><span class="iban-value">Eleonora Catellani, Andreas Wolf Ciavarra</span></span>
+              aria-label="Codice IBAN — clicca per copiare l'IBAN"
+              data-i18n-aria-label="rsvp.ibanAria">
+              <span class="iban-row"><span class="iban-label" data-i18n="rsvp.ibanHolder">Intestatario</span><span class="iban-value">Eleonora Catellani, Andreas Wolf Ciavarra</span></span>
               <span class="iban-row"><span class="iban-label">IBAN</span><span class="iban-value" id="ibanValue">IT71F0306930370100000074007</span></span>
-              <span class="iban-row"><span class="iban-label">Banca</span><span class="iban-value">Intesa Sanpaolo</span></span>
-              <span class="iban-hint" aria-live="polite">clicca per copiare l'IBAN</span>
+              <span class="iban-row"><span class="iban-label" data-i18n="rsvp.ibanBank">Banca</span><span class="iban-value">Intesa Sanpaolo</span></span>
+              <span class="iban-hint" aria-live="polite" data-i18n="rsvp.ibanHint">clicca per copiare l'IBAN</span>
             </button>
           </div>
 
