@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eleonoraeandreas.github.io/sitemap.xml
