@@ -155,47 +155,27 @@
             <div class="section-rule" aria-hidden="true"></div>
           </header>
 
-          <div class="location-row">
-            <div class="location-info">
-              <address class="location-address">
-                <strong class="location-venue">Vigna Bogiet</strong>
-                <span>Strada Val S. Martino Sup., 60, 10131 Torino (TO)</span>
-              </address>
+          <!-- No map here on purpose: the venue is NOT reachable by car and must
+               not be offered as a driving destination. The map lives in the
+               "Punto di Ritrovo" section below, pointed at the shuttle stop. -->
+          <div class="location-info">
+            <address class="location-address">
+              <strong class="location-venue">Vigna Bogiet</strong>
+              <span>Strada Val S. Martino Sup., 60, 10131 Torino (TO)</span>
+            </address>
 
-              <dl class="location-schedule">
-                <div class="location-schedule__row">
-                  <dt data-i18n="location.ceremony">Cerimonia</dt>
-                  <dd data-i18n="location.ceremonyTime">ore 16:30</dd>
-                </div>
-                <div class="location-schedule__row">
-                  <dt data-i18n="location.reception">Ricevimento</dt>
-                  <dd data-i18n="location.receptionTime">A seguire</dd>
-                </div>
-              </dl>
-            </div>
+            <dl class="location-schedule">
+              <div class="location-schedule__row">
+                <dt data-i18n="location.ceremony">Cerimonia</dt>
+                <dd data-i18n="location.ceremonyTime">ore 16:30</dd>
+              </div>
+              <div class="location-schedule__row">
+                <dt data-i18n="location.reception">Ricevimento</dt>
+                <dd data-i18n="location.receptionTime">A seguire</dd>
+              </div>
+            </dl>
 
-            <div class="location-map">
-              <iframe
-                src="https://www.google.com/maps?q=Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO&hl=it&z=15&output=embed"
-                title="Mappa: Strada Val S. Martino Sup., 60, Torino"
-                data-i18n-title="location.mapTitle"
-                loading="eager"
-                fetchpriority="high"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade">
-              </iframe>
-            </div>
-
-            <a
-              href="https://www.google.com/maps/place/Strada+Val+S.+Martino+Sup.,+60,+10131+Torino+TO,+Italy/@45.0604905,7.7187541,806m/data=!3m2!1e3!4b1!4m6!3m5!1s0x478872eba3f43833:0xca5c7841f860b6f4!8m2!3d45.0604867!4d7.721329!16s%2Fg%2F11c2gj1sdj?hl=en-GB&entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
-              class="map-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Apri il percorso in Google Maps (si apre in nuova scheda)"
-              data-i18n-aria-label="location.mapLinkAria"
-              data-i18n="location.mapLink">
-              Apri in Google Maps →
-            </a>
+            <p class="location-note" data-i18n="location.note">Raggiungibile solo con la navetta</p>
           </div>
 
         </div>
@@ -205,19 +185,89 @@
       <!-- ─────────────────────────────────────────────
            SECTION · Parking (own section · light background)
       ────────────────────────────────────────────── -->
-      <section class="section section--parking" id="parking" aria-label="Parcheggio" data-i18n-aria-label="location.parkingLabel">
+      <section class="section section--parking" id="parking" aria-label="Navetta e Parcheggio" data-i18n-aria-label="location.parkingLabel">
         <div class="section-body">
 
           <header class="section-header">
             <span class="section-deco" aria-hidden="true">◈</span>
-            <h2 class="section-title" data-i18n="location.parkingLabel">Parcheggio</h2>
+            <h2 class="section-title" data-i18n="location.parkingLabel">Navetta &amp; Parcheggio</h2>
             <div class="section-rule" aria-hidden="true"></div>
           </header>
 
-          <p class="parking-text" data-i18n="location.parkingText">Maggiori dettagli per il parcheggio e possibile servizio navetta saranno comunicati più avanti sul sito.</p>
+          <p class="parking-text" data-i18n="location.parkingText">La location non dispone di parcheggio: per questo abbiamo organizzato un servizio navetta che vi accompagnerà fino a Vigna Bogiet e vi riporterà a Torino a fine serata.</p>
+
+          <p class="parking-text" data-i18n="location.parkingText2">Vi chiediamo di essere puntuali e di arrivare con meno macchine possibili, così da trovare più facilmente parcheggio nella zona di Piazza Hermada.</p>
+
+          <div class="parking-note">
+            <span class="parking-note__label" data-i18n="location.parkingNoteLabel">Importante</span>
+            <p class="parking-text" data-i18n="location.parkingNote">Vi chiediamo di utilizzare la navetta e di non provare a raggiungere la location in macchina: la strada è molto stretta e non c’è modo di fare inversione. Se salgono più macchine insieme, si rischia di rimanere bloccati.</p>
+          </div>
 
         </div>
       </section><!-- /.section--parking -->
+
+
+      <!-- ────────────────────────────────────────
+           SECTION · Punto di ritrovo (shuttle stop · sage background)
+           Reuses the .location-* component classes on purpose — same
+           card/map/link vocabulary, zero new layout CSS. The circular map
+           that used to point at Vigna Bogiet now points here.
+      ───────────────────────────────────────── -->
+      <section class="section section--meeting" id="meeting" aria-label="Punto di ritrovo" data-i18n-aria-label="meeting.aria">
+        <div class="section-body">
+
+          <header class="section-header">
+            <span class="section-deco" aria-hidden="true">◈</span>
+            <h2 class="section-title" data-i18n="meeting.title">Punto di Ritrovo</h2>
+            <div class="section-rule" aria-hidden="true"></div>
+          </header>
+
+          <div class="location-row">
+            <div class="location-info">
+              <address class="location-address">
+                <strong class="location-venue">Piazza Hermada</strong>
+                <span data-i18n="meeting.church">davanti alla chiesa</span>
+                <span>Strada Val S. Martino, 7, 10131 Torino (TO)</span>
+              </address>
+
+              <dl class="location-schedule">
+                <div class="location-schedule__row">
+                  <dt data-i18n="meeting.outbound">Andata</dt>
+                  <dd data-i18n="meeting.outboundTime">ore 15:30</dd>
+                </div>
+                <div class="location-schedule__row">
+                  <dt data-i18n="meeting.return">Ritorno</dt>
+                  <dd data-i18n="meeting.returnTime">23:00 – 2:00</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="location-map">
+              <iframe
+                src="https://www.google.com/maps?q=Strada+Val+S.+Martino,+7,+10131+Torino+TO&amp;hl=it&amp;z=16&amp;output=embed"
+                title="Mappa: Strada Val S. Martino, 7, Torino"
+                data-i18n-title="meeting.mapTitle"
+                loading="eager"
+                fetchpriority="high"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+
+            <a
+              href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Val+S.+Martino%2C+7%2C+10131+Torino+TO"
+              class="map-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Apri il punto di ritrovo in Google Maps (si apre in nuova scheda)"
+              data-i18n-aria-label="meeting.mapLinkAria"
+              data-i18n="meeting.mapLink">
+              Apri in Google Maps →
+            </a>
+          </div>
+
+        </div>
+      </section><!-- /.section--meeting -->
 
 
       <!-- ─────────────────────────────────────────────

@@ -198,6 +198,7 @@ address { font-style: normal; }
 .section--location,
 .section--rsvp,
 .section--parking,
+.section--meeting,
 .section--gift {
   transition:
     filter     var(--t-mid),
@@ -207,6 +208,7 @@ address { font-style: normal; }
 .section--location:hover,
 .section--rsvp:hover,
 .section--parking:hover,
+.section--meeting:hover,
 .section--gift:hover {
   transform: translateY(-0.2rem);
 }
@@ -433,6 +435,13 @@ address { font-style: normal; }
   max-width: 60rem;
 }
 
+/* The meeting row pairs a short address block with the map, so it reads best on
+   a narrower measure than the old location row — otherwise info and map drift
+   apart into two islands with a canyon between them. */
+.section--meeting .location-row {
+  max-width: 44rem;
+}
+
 .location-row .location-info { grid-area: info; }
 .location-row .location-map  { grid-area: map; }
 .location-row .map-link      { grid-area: link; }
@@ -507,6 +516,22 @@ address { font-style: normal; }
 /* Map — circular crop. Square aspect + 50% border-radius gives a perfect
    circle. `isolation: isolate` forces a stacking context so Safari/iOS
    actually clips the iframe to the border-radius (a known WebKit bug). */
+/* "Only reachable by shuttle" line — closes the location card. Deliberately
+   uppercase/accent so it reads as part of the schedule vocabulary rather than
+   as a paragraph, and it sits INSIDE .location-info so it inherits the ivory
+   legibility card over the sketch. */
+.location-note {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.66rem, 0.88vw, 0.76rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--clr-accent);
+  max-width: 26ch;
+  margin-top: 0.2em;
+}
+
 .location-map {
   width: clamp(11rem, 18vw, 15rem);
   aspect-ratio: 1;
@@ -550,14 +575,21 @@ address { font-style: normal; }
 }
 
 /* ────────────────────────────────────────────────────────────────
-   SECTIONS · PARKING & GIFT (standalone light sections)
-   Continue the alternating background rhythm:
-   hero (ivory) → location (sage) → parking (warm ivory)
-   → rsvp (sage) → gift (warm ivory).
+   BACKGROUND RHYTHM — light / sage, alternating all the way down:
+   hero (ivory) → location (sage + sketch) → parking (warm ivory)
+   → meeting (sage) → rsvp (warm ivory) → gift (sage).
+   Adding the "Punto di ritrovo" section made the page six sections
+   long, which flipped rsvp and gift from their old colours so the
+   alternation keeps running. Add a section ⇒ keep alternating.
    ──────────────────────────────────────────────────────────────── */
 .section--parking,
-.section--gift {
+.section--rsvp {
   background: var(--clr-ivory-warm);
+}
+
+.section--meeting,
+.section--gift {
+  background: var(--clr-sage);
 }
 
 /* Generic descriptive body text — ONE consistent treatment everywhere it
@@ -578,14 +610,37 @@ address { font-style: normal; }
   max-width: 44ch;
 }
 
-
-/* ────────────────────────────────────────────────────────────────
-   SECTION 3 · RSVP & IBAN
-   ──────────────────────────────────────────────────────────────── */
-.section--rsvp {
-  background: var(--clr-sage);
+/* "Importante" callout — the do-not-drive-up warning. Same card vocabulary as
+   the IBAN block (accent tint + hairline border) so it reads as a considered
+   part of the page, not a browser alert. Its body copy reuses .parking-text,
+   so the one descriptive-body-text rule still governs the type. */
+.parking-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+  max-width: 46ch;
+  padding: 1em 1.4em;
+  background: rgba(139, 115, 85, 0.07);
+  border: 1px solid rgba(139, 115, 85, 0.18);
+  border-radius: 0.2rem;
 }
 
+.parking-note__label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(0.62rem, 0.82vw, 0.72rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  opacity: 0.85;
+}
+
+
+/* ────────────────────────────────────────────────────────────────
+   SECTION · RSVP & IBAN   (background set in the rhythm block above)
+   ──────────────────────────────────────────────────────────────── */
 /* .rsvp-message uses the unified descriptive-body-text rule above — same font
    and style as the gift presence line (no longer italic Cormorant). */
 
@@ -766,8 +821,9 @@ address { font-style: normal; }
 
 .section--location { animation: fadeRight 0.6s var(--ease-out) 0.1s both; }
 .section--parking  { animation: fadeRight 0.6s var(--ease-out) 0.15s both; }
-.section--rsvp     { animation: fadeRight 0.6s var(--ease-out) 0.2s both; }
-.section--gift     { animation: fadeRight 0.6s var(--ease-out) 0.25s both; }
+.section--meeting  { animation: fadeRight 0.6s var(--ease-out) 0.2s both; }
+.section--rsvp     { animation: fadeRight 0.6s var(--ease-out) 0.25s both; }
+.section--gift     { animation: fadeRight 0.6s var(--ease-out) 0.3s both; }
 
 
 /* ────────────────────────────────────────────────────────────────
@@ -841,6 +897,7 @@ address { font-style: normal; }
   .section--location:hover,
   .section--rsvp:hover,
   .section--parking:hover,
+  .section--meeting:hover,
   .section--gift:hover { transform: none; }
   .layout:has(.section:hover) .section { filter: none; }
 }
@@ -866,6 +923,7 @@ address { font-style: normal; }
   .hero__place,
   .section--location,
   .section--parking,
+  .section--meeting,
   .section--rsvp,
   .section--gift {
     opacity: 1;

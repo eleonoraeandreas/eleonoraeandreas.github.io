@@ -32,11 +32,23 @@ const I18N = {
     'location.ceremonyTime':  'ore 16:30',
     'location.reception':     'Ricevimento',
     'location.receptionTime': 'A seguire',
-    'location.mapTitle':      'Mappa: Strada Val S. Martino Sup., 60, Torino',
-    'location.mapLinkAria':   'Apri il percorso in Google Maps (si apre in nuova scheda)',
-    'location.mapLink':       'Apri in Google Maps →',
-    'location.parkingLabel':  'Parcheggio',
-    'location.parkingText':   'Maggiori dettagli per il parcheggio e possibile servizio navetta saranno comunicati più avanti sul sito.',
+    'location.note':          'Raggiungibile solo con la navetta',
+    'location.parkingLabel':  'Navetta & Parcheggio',
+    'location.parkingText':   'La location non dispone di parcheggio: per questo abbiamo organizzato un servizio navetta che vi accompagnerà fino a Vigna Bogiet e vi riporterà a Torino a fine serata.',
+    'location.parkingText2':  'Vi chiediamo di essere puntuali e di arrivare con meno macchine possibili, così da trovare più facilmente parcheggio nella zona di Piazza Hermada.',
+    'location.parkingNoteLabel': 'Importante',
+    'location.parkingNote':   'Vi chiediamo di utilizzare la navetta e di non provare a raggiungere la location in macchina: la strada è molto stretta e non c’è modo di fare inversione. Se salgono più macchine insieme, si rischia di rimanere bloccati.',
+
+    'meeting.aria':         'Punto di ritrovo',
+    'meeting.title':        'Punto di Ritrovo',
+    'meeting.church':       'davanti alla chiesa',
+    'meeting.outbound':     'Andata',
+    'meeting.outboundTime': 'ore 15:30',
+    'meeting.return':       'Ritorno',
+    'meeting.returnTime':   '23:00 – 2:00',
+    'meeting.mapTitle':     'Mappa: Strada Val S. Martino, 7, Torino',
+    'meeting.mapLinkAria':  'Apri il punto di ritrovo in Google Maps (si apre in nuova scheda)',
+    'meeting.mapLink':      'Apri in Google Maps →',
 
     'rsvp.aria':       'Conferma presenza',
     'rsvp.message':    'Vi preghiamo di confermare la vostra presenza entro martedì 30 giugno',
@@ -72,11 +84,23 @@ const I18N = {
     'location.ceremonyTime':  '16:30 Uhr',
     'location.reception':     'Empfang',
     'location.receptionTime': 'Im Anschluss',
-    'location.mapTitle':      'Karte: Strada Val S. Martino Sup., 60, Turin',
-    'location.mapLinkAria':   'Route in Google Maps öffnen (öffnet in neuem Tab)',
-    'location.mapLink':       'In Google Maps öffnen →',
-    'location.parkingLabel':  'Parkplatz',
-    'location.parkingText':   'Weitere Informationen zu Parkplatz und möglichem Shuttle-Service folgen später auf der Website.',
+    'location.note':          'Nur mit dem Shuttle erreichbar',
+    'location.parkingLabel':  'Shuttle & Parkplatz',
+    'location.parkingText':   'Die Location verfügt über keinen Parkplatz. Deshalb haben wir einen Shuttle-Service organisiert, der euch zur Vigna Bogiet bringt und am Ende des Abends wieder zurück nach Turin.',
+    'location.parkingText2':  'Wir bitten euch, pünktlich zu sein und mit möglichst wenigen Autos anzureisen, damit rund um die Piazza Hermada genügend Parkplätze zu finden sind.',
+    'location.parkingNoteLabel': 'Wichtig',
+    'location.parkingNote':   'Bitte nutzt den Shuttle und versucht nicht, die Location mit dem Auto zu erreichen: Die Straße ist sehr schmal und es gibt keine Wendemöglichkeit. Wenn mehrere Autos gleichzeitig hochfahren, besteht die Gefahr, dass alle stecken bleiben.',
+
+    'meeting.aria':         'Treffpunkt',
+    'meeting.title':        'Treffpunkt',
+    'meeting.church':       'vor der Kirche',
+    'meeting.outbound':     'Hinfahrt',
+    'meeting.outboundTime': '15:30 Uhr',
+    'meeting.return':       'Rückfahrt',
+    'meeting.returnTime':   '23:00 – 2:00 Uhr',
+    'meeting.mapTitle':     'Karte: Strada Val S. Martino, 7, Turin',
+    'meeting.mapLinkAria':  'Treffpunkt in Google Maps öffnen (öffnet in neuem Tab)',
+    'meeting.mapLink':      'In Google Maps öffnen →',
 
     'rsvp.aria':       'Teilnahmebestätigung',
     'rsvp.message':    'Bitte bestätigt eure Teilnahme bis Dienstag, den 30. Juni',
@@ -291,10 +315,10 @@ function setCountdown(lang) {
 // MAP FADE — mask the iframe white-flash with a fade-in
 // ────────────────────────────────────────────────────────────────
 function initMapFade() {
-  const iframe = document.querySelector('.location-map iframe');
-  if (!iframe) return;
-  if (iframe.complete) iframe.classList.add('is-loaded');
-  else iframe.addEventListener('load', () => iframe.classList.add('is-loaded'), { once: true });
+  document.querySelectorAll('.location-map iframe').forEach((iframe) => {
+    if (iframe.complete) iframe.classList.add('is-loaded');
+    else iframe.addEventListener('load', () => iframe.classList.add('is-loaded'), { once: true });
+  });
 }
 
 
